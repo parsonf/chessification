@@ -1,3 +1,4 @@
+package com.parsonf.chessification.pieces;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
