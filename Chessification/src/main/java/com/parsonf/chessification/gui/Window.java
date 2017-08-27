@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import com.parsonf.chessification.Chess;
 
+@SuppressWarnings("serial")
 public class Window extends JFrame {
 	
 	public static final int WIDTH = 1000;

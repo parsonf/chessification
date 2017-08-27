@@ -50,7 +50,7 @@ public class Pawn extends Piece {
 		final boolean CAN_CAPTURE_LEFT = true;
 		final boolean CAN_CAPTURE_RIGHT = true;
 		
-		if (board.isValidCoord(coordMovingTo)) {
+		if (Board.isValidCoord(coordMovingTo)) {
 			if (coordMovingTo.subtract(pos).equals(new Coord(2,0))) {
 				if (hasMoved) {
 					return CANT_MOVE_TWO_ALREADY_MOVED;

@@ -28,10 +28,19 @@ public class Player {
 	}
 	// Methods -------------------------------------------------------------
 
-	//# ; this function gets all the legal moves for the player.
-	//# ; also, we will want to know if we should check for check and castle.
-	//# ; why wouldn't we want to? checking for those involves checking for future moves,
-	//# ; which would lead to an infinite loop.
+	//# ; 
+	/**
+	 * This function gets all the legal moves for the player.
+	 * Also, we will want to know if we should check for check and castle.
+	 * Why wouldn't we want to? Checking for those involves checking for future moves,
+	 * which would lead to an infinite loop.
+	 * 
+	 * @param board
+	 * @param player
+	 * @param checkCheck
+	 * @param checkCastle
+	 * @return
+	 */
 	public Set<Move> getAllLegalMoves(Board board, Player player, boolean checkCheck, boolean checkCastle) {
 		Set<Move> moves = new HashSet<Move>();
 		
@@ -94,7 +103,7 @@ public class Player {
 	 * @return
 	 */
 	private Set<Move> getCastleMoves(boolean color) {
-		// TODO Auto-generated method stub
+		// TODO impl: getCastleMoves
 		return null;
 	}
 
@@ -104,8 +113,6 @@ public class Player {
 		Board board = game.getBoard();
 		return board.getSpace(coord).getPiece().getAvailableMoves(board, coord);
 	}
-	
-	
 
 	// Getters/Setters -----------------------------------------------------
 

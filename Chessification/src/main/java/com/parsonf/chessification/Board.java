@@ -13,7 +13,7 @@ public class Board {
 		board = new Space[8][8];
 		for (int col = Coord.COL_A; col <= Coord.COL_H; col++) {
 			for (int row = Coord.ROW_1; row <= Coord.ROW_8; row++) {
-				board[row][col] = new Space();
+				board[col-1][row-1] = new Space();
 			}
 		}
 	}
@@ -23,40 +23,43 @@ public class Board {
 		if (!isValidCoord(coord)) {
 			return null;
 		}
-		return board[coord.col][coord.row];
+		return board[coord.col-1][coord.row-1];
 	}
 	
 	@Override
 	public Object clone() {
 		Board clone = new Board();
-		// TODO finish board clone.
+		
+		for (int col = Coord.COL_A; col <= Coord.COL_H; col++) {
+			for (int row = Coord.ROW_1; row <= Coord.ROW_8; row++) {
+				board[col-1][row-1] = new Space();
+				if (this.board[col][row].isOccupied()) {
+					//Piece piece = this.board[col-1][row-1].getPiece();
+					// TODO Piece newPiece = new Piece(piece.getColor());
+					
+				} else {
+					
+				}
+			}
+		}
+		
 		return clone;
 	}
 
 	// Getters/Setters -----------------------------------------------------
 	
-	public boolean isValidCoord(Coord coord) {
+	public static boolean isValidCoord(Coord coord) {
 		if (coord.getRow() < Coord.ROW_1 || coord.getRow() > Coord.ROW_8) {
-			try {
-				throw new Exception("Board.getPiece(): row out of bounds! row=" + coord.getRow() + ". ");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			return false;
 		}
 		if (coord.getCol() < Coord.COL_A || coord.getCol() > Coord.COL_H) {
-			try {
-				throw new Exception("Board.getPiece(): col out of bounds! col=" + coord.getCol() + ". ");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			return false;
 		}
 		return true;
 	}
 
 	public void move(Move move, boolean isActualMove) {
-		// TODO handle en passant somehow. may need to redo some of this implementation.
+		// TODO improve: handle en passant somehow. may need to redo some of this implementation.
 		Piece pieceToMove = getSpace(move.getFrom()).pickUpPiece();
 		if (isActualMove) {
 			pieceToMove.setHasMoved();
@@ -67,8 +70,8 @@ public class Board {
 			capturedPiece = null;
 			getSpace(move.getTo()).setPiece(pieceToMove);
 		}
-		// TODO if castling, move the rook too.
-		// TODO improve pawn promotion to choice.
+		// TODO impl: if castling, move the rook too.
+		// TODO improve: pawn promotion to choice.
 		if (pieceToMove instanceof Pawn && move.getTo().getRow() == Coord.ROW_8) {
 			getSpace(move.getTo()).pickUpPiece();
 			Piece promotedPawn = new Queen(pieceToMove.getColor());
@@ -77,12 +80,12 @@ public class Board {
 	}
 
 	public boolean isInCheck(boolean colorToCheckIfInCheck) {
-		// TODO impl isInCheck
+		// TODO impl: isInCheck
 		return false;
 	}
 
 	public boolean coordThreatened(Coord coord, boolean colorToCheckIfUnderThreat) {
-		// TODO Auto-generated method stub
+		// TODO impl: coordThreatened
 		return false;
 	}
 

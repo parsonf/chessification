@@ -12,7 +12,7 @@ import com.parsonf.chessification.pieces.Queen;
 import com.parsonf.chessification.pieces.Rook;
 
 public class AIPlayStyle implements IPlayStyle {
-	// TODO external settings file, that gets imported instead, wouldn't that be cool??
+	// TODO improve: external settings file, that gets imported instead, wouldn't that be cool??
 	private final int PAWN_VALUE = 100;
 	private final int ROOK_VALUE = 500;
 	private final int KNIGHT_VALUE = 300;
@@ -20,23 +20,23 @@ public class AIPlayStyle implements IPlayStyle {
 	private final int QUEEN_VALUE = 1000;
 	private final int KING_VALUE = 900;
 	
-	//# ; I see no value in encouraging or discouraging number of pawn moves.
+	// I see no value in encouraging or discouraging number of pawn moves.
 	private final int PAWN_MOVE_VALUE = 0;
 	
-	//# ; rooks are very useful when they control entire columns. number of moves is very valuable.
+	// rooks are very useful when they control entire columns. number of moves is very valuable.
 	private final int ROOK_MOVE_VALUE = 50;
 	
-	//# ; knights are most useful when they have moves. forks are awesome. knights are very mobile in tight spots. yes yes.
+	// knights are most useful when they have moves. forks are awesome. knights are very mobile in tight spots. yes yes.
 	private final int KNIGHT_MOVE_VALUE = 60;
 	
-	//# ; bishops are most useful when they control diagonals.
+	// bishops are most useful when they control diagonals.
 	private final int BISHOP_MOVE_VALUE = 50;
 	
-	//# ; queens are rooks plus bishops... but... don't want to be encouraging risking the queen too much.
+	// queens are rooks plus bishops... but... don't want to be encouraging risking the queen too much.
 	private final int QUEEN_MOVE_VALUE = 20;
 	
-	//# ; kings... they do best in hiding, but when being checked, best to have available moves.
-	//# ; so, neither encourage nor discourage, i guess.
+	// kings... they do best in hiding, but when being checked, best to have available moves.
+	// so, neither encourage nor discourage, i guess.
 	private final int KING_MOVE_VALUE = 0;
 	
 	private final int[][] PAWN_POSITION_VALUE = new int[][] {
@@ -134,7 +134,6 @@ public class AIPlayStyle implements IPlayStyle {
 	// Methods -------------------------------------------------------------
 	@Override
 	public int evaluateGameState(Board board, Player whoJustMoved) {
-		// TODO aiplaystyle evaluategamestate
 		int totalValue = 0;
 		int pieceValue = 0;
 		boolean isMine = false;
@@ -275,7 +274,4 @@ public class AIPlayStyle implements IPlayStyle {
 	public int getKingPositionValue(Coord pos) {
 		return getValueAtCoord(KING_POSITION_VALUE, pos);
 	}
-	
-
-
 }

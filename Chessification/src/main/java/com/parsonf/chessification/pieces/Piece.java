@@ -29,10 +29,21 @@ public abstract class Piece {
 	 * @return
 	 */	
 	public Set<Move> lineMovement(Board board, Coord pos, Coord vector) {
+		if (!Board.isValidCoord(pos)) {
+			throw new IllegalArgumentException("Given position is not on the board! pos: " + pos.toString());
+		}
+		final boolean vectorColIsValid = Math.abs(vector.getCol()) < 2;
+		final boolean vectorRowIsValid = Math.abs(vector.getRow()) < 2;
+		final boolean vectorIsValid = !(vector.getCol() == 0 && vector.getRow() == 0);
+		if (!vectorColIsValid || !vectorRowIsValid) {
+			throw new IllegalArgumentException("Vector does not need magnitude, just direction. vector: " + vector.toString());
+		} else if (!vectorIsValid) {
+			throw new IllegalArgumentException("Vector needs a direction! Cannot be (0,0).");
+		}
 		Set<Move> moves = new HashSet<Move>();
 		Coord moveToPos = pos.add(vector);
 		// if the position to move to is not valid, return empty moves.
-		if (!board.isValidCoord(moveToPos)) {
+		if (!Board.isValidCoord(moveToPos)) {
 			return moves;
 		}
 		// if there was no piece at this space, then it is a valid move for line movement.
@@ -57,7 +68,7 @@ public abstract class Piece {
 		final boolean SPACE_IS_VACANT = true;
 		final boolean CAN_CAPTURE_ENEMY = true;
 		
-		if (board.isValidCoord(coordMovingTo)) {
+		if (Board.isValidCoord(coordMovingTo)) {
 			Space space = board.getSpace(coordMovingTo);
 			if (space.isOccupied()) {
 				if (space.getPiece().getColor() != color) {
