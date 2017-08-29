@@ -26,4 +26,13 @@ public class Rook extends Piece {
 		moves.addAll(lineMovement(board, pos, new Coord(-1, 0)));
 		return moves;
 	}
+
+	@Override
+	public Piece copy() {
+		Rook rook = new Rook(color);
+		if (this.hasMoved()) {
+			rook.setHasMoved();
+		}
+		return rook;
+	}
 }

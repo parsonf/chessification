@@ -27,8 +27,6 @@ public class Player {
 		this.color = color;
 	}
 	// Methods -------------------------------------------------------------
-
-	//# ; 
 	/**
 	 * This function gets all the legal moves for the player.
 	 * Also, we will want to know if we should check for check and castle.
@@ -48,7 +46,7 @@ public class Player {
 			for(int row=Coord.ROW_MIN; row<=Coord.ROW_MAX; row++) {
 				Coord coord = new Coord(col, row);
 				// we are looping through each piece.
-				if (board.getSpace(coord) == Space.VACANT) {
+				if (!board.getSpace(coord).isOccupied()) {
 					// this is just a space. next.
 					continue;
 				} else {
@@ -65,7 +63,7 @@ public class Player {
 			}
 		}
 		if (checkCastle) {
-			moves.addAll(getCastleMoves(player.color));
+			moves.addAll(getCastleMoves(player));
 		}
 		if (checkCheck) {
 			moves.removeAll(findCheckedMoves(moves));
@@ -85,9 +83,8 @@ public class Player {
 		Board board;
 		Set<Move> movesToRemove = new HashSet<Move>();
 		for (Move move: moves) {
-			board = (Board) game.getBoard().clone();
-			board.isInCheck(color);
-			if (board.isInCheck(color)) {
+			board = game.getBoard().copy();
+			if (board.isPlayerInCheck(this)) {
 				movesToRemove.add(move);
 			}
 		}
@@ -102,9 +99,86 @@ public class Player {
 	 * @param color
 	 * @return
 	 */
-	private Set<Move> getCastleMoves(boolean color) {
-		// TODO impl: getCastleMoves
-		return null;
+	private Set<Move> getCastleMoves(Player player) {
+		Set<Move> moves = new HashSet<Move>();
+		// Conditions for castling to be available:
+		// 1. King must not have moved.
+		// 2. Rook must not have moved.
+		// 3. Spaces inbetween must be clear.
+		// 4. King, rook, and spaces inbetween must not be threatened.
+		Board board = game.getBoard();
+		if (player.color == Color.WHITE) {
+			Coord e1 = new Coord(Coord.COL_E, Coord.ROW_1);
+			Coord h1 = new Coord(Coord.COL_H, Coord.ROW_1);
+			if (board.getSpace(e1).isOccupied() && !game.getBoard().getSpace(e1).getPiece().hasMoved()
+			 && board.getSpace(h1).isOccupied() && !game.getBoard().getSpace(h1).getPiece().hasMoved()) {
+				Coord f1 = new Coord(Coord.COL_F, Coord.ROW_1);
+				Coord g1 = new Coord(Coord.COL_G, Coord.ROW_1);
+				if (!board.getSpace(f1).isOccupied()
+				 && !board.getSpace(g1).isOccupied()) {
+					if (!board.isPlayerThreatenedAtCoord(player, e1)
+					 && !board.isPlayerThreatenedAtCoord(player, f1)
+					 && !board.isPlayerThreatenedAtCoord(player, g1)
+					 && !board.isPlayerThreatenedAtCoord(player, h1)) {
+						moves.add(new Move(e1, g1));
+					}
+				}
+			}
+			Coord a1 = new Coord(Coord.COL_A, Coord.ROW_1);
+			if (board.getSpace(e1).isOccupied() && !game.getBoard().getSpace(e1).getPiece().hasMoved()
+			 && board.getSpace(a1).isOccupied() && !game.getBoard().getSpace(a1).getPiece().hasMoved()) {
+				Coord b1 = new Coord(Coord.COL_B, Coord.ROW_1);
+				Coord c1 = new Coord(Coord.COL_C, Coord.ROW_1);
+				Coord d1 = new Coord(Coord.COL_D, Coord.ROW_1);
+				if (!board.getSpace(b1).isOccupied()
+				 && !board.getSpace(c1).isOccupied()
+				 && !board.getSpace(d1).isOccupied()) {
+					if (!board.isPlayerThreatenedAtCoord(player, a1)
+					 && !board.isPlayerThreatenedAtCoord(player, b1)
+					 && !board.isPlayerThreatenedAtCoord(player, c1)
+					 && !board.isPlayerThreatenedAtCoord(player, d1)
+					 && !board.isPlayerThreatenedAtCoord(player, e1)) {
+						moves.add(new Move(e1, c1));
+					}
+				}
+			}
+		} else { // player.color is black
+			Coord e8 = new Coord(Coord.COL_E, Coord.ROW_8);
+			Coord h8 = new Coord(Coord.COL_H, Coord.ROW_8);
+			if (board.getSpace(e8).isOccupied() && !game.getBoard().getSpace(e8).getPiece().hasMoved()
+			 && board.getSpace(h8).isOccupied() && !game.getBoard().getSpace(h8).getPiece().hasMoved()) {
+				Coord f8 = new Coord(Coord.COL_F, Coord.ROW_8);
+				Coord g8 = new Coord(Coord.COL_G, Coord.ROW_8);
+				if (!board.getSpace(f8).isOccupied()
+				 && !board.getSpace(g8).isOccupied()) {
+					if (!board.isPlayerThreatenedAtCoord(player, e8)
+					 && !board.isPlayerThreatenedAtCoord(player, f8)
+					 && !board.isPlayerThreatenedAtCoord(player, g8)
+					 && !board.isPlayerThreatenedAtCoord(player, h8)) {
+						moves.add(new Move(e8, g8));
+					}
+				}
+			}
+			Coord a8 = new Coord(Coord.COL_A, Coord.ROW_8);
+			if (board.getSpace(e8).isOccupied() && !game.getBoard().getSpace(e8).getPiece().hasMoved()
+			 && board.getSpace(a8).isOccupied() && !game.getBoard().getSpace(a8).getPiece().hasMoved()) {
+				Coord b8 = new Coord(Coord.COL_B, Coord.ROW_8);
+				Coord c8 = new Coord(Coord.COL_C, Coord.ROW_8);
+				Coord d8 = new Coord(Coord.COL_D, Coord.ROW_8);
+				if (!board.getSpace(b8).isOccupied()
+				 && !board.getSpace(c8).isOccupied()
+				 && !board.getSpace(d8).isOccupied()) {
+					if (!board.isPlayerThreatenedAtCoord(player, a8)
+					 && !board.isPlayerThreatenedAtCoord(player, b8)
+					 && !board.isPlayerThreatenedAtCoord(player, c8)
+					 && !board.isPlayerThreatenedAtCoord(player, d8)
+					 && !board.isPlayerThreatenedAtCoord(player, e8)) {
+						moves.add(new Move(e8, c8));
+					}
+				}
+			}
+		}
+		return moves;
 	}
 
 
@@ -124,9 +198,9 @@ public class Player {
 	}
 	public void findOpponent() {
 		if (color == Color.BLACK) {
-			opponent = game.getWhitePlayer();
+			opponent = game.getPlayer(Color.WHITE);
 		} else {
-			opponent = game.getBlackPlayer();
+			opponent = game.getPlayer(Color.BLACK);
 		}
 	}
 }

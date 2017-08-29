@@ -9,7 +9,6 @@ public class Game {
 	private Player whitePlayer;
 	private Board board;
 	private List<Move> moves;
-	
 
 	// Constructors --------------------------------------------------------
 	public Game() {
@@ -20,20 +19,11 @@ public class Game {
 		board = new Board();
 	}
 
-
-	
-
 	// Methods -------------------------------------------------------------
 	
 	
-
-	
-	public Player getBlackPlayer() {
-		return blackPlayer;
-	}
-	
-	public Player getWhitePlayer() {
-		return whitePlayer;
+	public Player getPlayer(boolean color) {
+		return (color == Color.WHITE) ? whitePlayer : blackPlayer;
 	}
 
 	public Board getBoard() {

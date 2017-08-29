@@ -30,11 +30,22 @@ public class Knight extends Piece {
 			new Coord(-2, -1)
 		};
 		for (Coord possibleMove: possibleMoves) {
-			if (canMakeMove(board, pos, possibleMove)) {
+			Coord moveToCoord = pos.add(possibleMove);
+			if (canMakeMove(board, pos, moveToCoord)) {
 				moves.add(new Move(pos, possibleMove));
 			}
 		}
 		return moves;
+	}
+
+
+	@Override
+	public Piece copy() {
+		Knight knight = new Knight(color);
+		if (this.hasMoved()) {
+			knight.setHasMoved();
+		}
+		return knight;
 	}
 
 	// Getters/Setters -----------------------------------------------------

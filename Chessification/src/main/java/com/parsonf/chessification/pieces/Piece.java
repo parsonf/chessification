@@ -32,12 +32,8 @@ public abstract class Piece {
 		if (!Board.isValidCoord(pos)) {
 			throw new IllegalArgumentException("Given position is not on the board! pos: " + pos.toString());
 		}
-		final boolean vectorColIsValid = Math.abs(vector.getCol()) < 2;
-		final boolean vectorRowIsValid = Math.abs(vector.getRow()) < 2;
 		final boolean vectorIsValid = !(vector.getCol() == 0 && vector.getRow() == 0);
-		if (!vectorColIsValid || !vectorRowIsValid) {
-			throw new IllegalArgumentException("Vector does not need magnitude, just direction. vector: " + vector.toString());
-		} else if (!vectorIsValid) {
+		if (!vectorIsValid) {
 			throw new IllegalArgumentException("Vector needs a direction! Cannot be (0,0).");
 		}
 		Set<Move> moves = new HashSet<Move>();
@@ -50,7 +46,9 @@ public abstract class Piece {
 		// therefore, add it, and continue looking in that direction for more moves.
 		if (!board.getSpace(moveToPos).isOccupied()) {
 			moves.add(new Move(pos, moveToPos));
-			moves.addAll(lineMovement(board, moveToPos, vector));
+			int colIncrease = vector.getCol() == 0 ? 0 : vector.getCol() + (vector.getCol()/Math.abs(vector.getCol()));
+			int rowIncrease = vector.getRow() == 0 ? 0 : vector.getRow() + (vector.getRow()/Math.abs(vector.getRow()));
+			moves.addAll(lineMovement(board, pos, vector.add(new Coord(colIncrease, rowIncrease))));
 			return moves;
 		} else {
 			// if there is a friendly piece at this space, then you cannot move there.
@@ -61,17 +59,18 @@ public abstract class Piece {
 		}
 		return moves;
 	}
-	
-	public boolean canMakeMove(Board board, Coord pos, Coord coordMovingTo) {
+
+
+	public boolean canMakeMove(Board board, Coord fromCoord, Coord targetCoord) {
 		final boolean NOT_A_VALID_SPACE = false;
 		final boolean SPACE_OCCUPIED_BY_OWN_COLOR = false;
 		final boolean SPACE_IS_VACANT = true;
 		final boolean CAN_CAPTURE_ENEMY = true;
 		
-		if (Board.isValidCoord(coordMovingTo)) {
-			Space space = board.getSpace(coordMovingTo);
-			if (space.isOccupied()) {
-				if (space.getPiece().getColor() != color) {
+		if (Board.isValidCoord(targetCoord)) {
+			Space targetSpace = board.getSpace(targetCoord);
+			if (targetSpace.isOccupied()) {
+				if (targetSpace.getPiece().getColor() != color) {
 					return CAN_CAPTURE_ENEMY;
 				} else {
 					return SPACE_OCCUPIED_BY_OWN_COLOR;
@@ -83,6 +82,8 @@ public abstract class Piece {
 			return NOT_A_VALID_SPACE;
 		}
 	}
+	
+	public abstract Piece copy();
 	
 	public abstract Set<Move> getAvailableMoves(Board board, Coord pos);
 

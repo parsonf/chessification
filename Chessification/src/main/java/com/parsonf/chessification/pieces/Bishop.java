@@ -26,4 +26,13 @@ public class Bishop extends Piece {
 		moves.addAll(lineMovement(board, pos, new Coord(-1, -1)));
 		return moves;
 	}
+
+	@Override
+	public Piece copy() {
+		Bishop bishop = new Bishop(color);
+		if (this.hasMoved()) {
+			bishop.setHasMoved();
+		}
+		return bishop;
+	}
 }

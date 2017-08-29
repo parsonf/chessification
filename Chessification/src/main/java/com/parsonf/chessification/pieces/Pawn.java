@@ -37,7 +37,7 @@ public class Pawn extends Piece {
 	}
 	
 	@Override
-	public boolean canMakeMove(Board board, Coord pos, Coord coordMovingTo) {
+	public boolean canMakeMove(Board board, Coord fromCoord, Coord coordMovingTo) {
 		final boolean NOT_A_VALID_SPACE = false;
 		final boolean CANT_MOVE_TWO_ALREADY_MOVED = false;
 		final boolean CANT_MOVE_TWO_BLOCKED_BY_PIECE = false;
@@ -51,31 +51,31 @@ public class Pawn extends Piece {
 		final boolean CAN_CAPTURE_RIGHT = true;
 		
 		if (Board.isValidCoord(coordMovingTo)) {
-			if (coordMovingTo.subtract(pos).equals(new Coord(2,0))) {
+			if (coordMovingTo.subtract(fromCoord).equals(new Coord(2,0))) {
 				if (hasMoved) {
 					return CANT_MOVE_TWO_ALREADY_MOVED;
 				} else {
-					if (!board.getSpace(pos.add(new Coord(1,0))).isOccupied()
+					if (!board.getSpace(fromCoord.add(new Coord(1,0))).isOccupied()
 					 && !board.getSpace(coordMovingTo).isOccupied()) {
 						return CAN_MOVE_TWO;
 					} else {
 						return CANT_MOVE_TWO_BLOCKED_BY_PIECE;
 					}
 				}
-			} else if (coordMovingTo.subtract(pos).equals(new Coord(1,0))) {
+			} else if (coordMovingTo.subtract(fromCoord).equals(new Coord(1,0))) {
 				if (board.getSpace(coordMovingTo).isOccupied()) {
 					return CANT_MOVE_ONE_BLOCKED;
 				} else {
 					return CAN_MOVE_ONE;
 				}
-			} else if (coordMovingTo.subtract(pos).equals(new Coord(1,-1))) {
+			} else if (coordMovingTo.subtract(fromCoord).equals(new Coord(1,-1))) {
 				if (board.getSpace(coordMovingTo).isOccupied()
 				 && board.getSpace(coordMovingTo).getPiece().color != color) {
 					return CAN_CAPTURE_LEFT;
 				} else {
 					return NOTHING_LEFT_TO_CAPTURE;
 				}
-			} else if (coordMovingTo.subtract(pos).equals(new Coord(1,1))) {
+			} else if (coordMovingTo.subtract(fromCoord).equals(new Coord(1,1))) {
 				if (board.getSpace(coordMovingTo).isOccupied()
 				 && board.getSpace(coordMovingTo).getPiece().color != color) {
 					return CAN_CAPTURE_RIGHT;
@@ -90,6 +90,14 @@ public class Pawn extends Piece {
 		}
 	}
 
+	@Override
+	public Piece copy() {
+		Pawn pawn = new Pawn(color);
+		if (this.hasMoved()) {
+			pawn.setHasMoved();
+		}
+		return pawn;
+	}
 
 	// Getters/Setters -----------------------------------------------------
 	public boolean hasMoved() {
@@ -99,4 +107,6 @@ public class Pawn extends Piece {
 	public void moved() {
 		this.hasMoved = true;
 	}
+
+
 }

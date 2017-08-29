@@ -29,4 +29,14 @@ public class Queen extends Piece {
 		moves.addAll(lineMovement(board, pos, new Coord(-1, -1)));
 		return moves;
 	}
+
+	@Override
+	public Piece copy() {
+		Queen queen = new Queen(color);
+		if (this.hasMoved()) {
+			queen.setHasMoved();
+		}
+		return queen;
+	}
+
 }

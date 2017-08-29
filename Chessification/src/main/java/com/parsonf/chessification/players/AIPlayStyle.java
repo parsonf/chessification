@@ -145,7 +145,7 @@ public class AIPlayStyle implements IPlayStyle {
 		if (player.getAllLegalMoves(board, whoJustMoved.getOpponent(), Player.CHECK_CHECK, Player.CHECK_CASTLE).isEmpty()) {
 			// if opponent is in check, then it is checkmate! value REALLY HIGH
 			// however, if not, then it is stalemate! value REALLY LOW
-			if (board.isInCheck(!whoJustMoved.getColor())) {
+			if (board.isPlayerInCheck(whoJustMoved.getOpponent())) {
 				totalValue += 90000; // DO IT !!!!!
 			} else {
 				totalValue -= 90000; // DONT DO IT !!!!!
@@ -162,7 +162,7 @@ public class AIPlayStyle implements IPlayStyle {
 					isMine = (whoJustMoved.getColor() == pieceColor);
 					// evaluate now
 					// take into consideration whether that piece is threatened.
-					isThreatened = board.coordThreatened(coord, whoJustMoved.getColor());
+					isThreatened = board.isPlayerThreatenedAtCoord(whoJustMoved, coord);
 					int pieceIndex = getPieceIndex(piece);
 					// lets add the value of simply having that piece on the board.
 					pieceValue = (isThreatened) ? PIECE_VALUE[pieceIndex]/2 : PIECE_VALUE[pieceIndex];

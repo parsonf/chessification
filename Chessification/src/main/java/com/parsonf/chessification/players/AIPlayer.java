@@ -49,7 +49,7 @@ public class AIPlayer extends Player {
 				return new Move(new Coord(0,0), new Coord(0,0), scoreThisBoard);
 			} else {
 				for (Move move: allLegalMoves) {
-					Board hypotheticalBoard = (Board) thinkBoard.clone();
+					Board hypotheticalBoard = thinkBoard.copy();
 					hypotheticalBoard.move(move, Move.HYPOTHETICAL);
 					int moveValue = playStyle.evaluateGameState(hypotheticalBoard, player);
 					if (player.getColor() == Color.BLACK) {
@@ -89,7 +89,7 @@ public class AIPlayer extends Player {
 		int bestScore = (color == Color.BLACK) ? 900000 : -900000;
 		Board hypotheticalBoard = null;
 		for (Move move: moves) {
-			hypotheticalBoard = (Board) thinkBoard.clone();
+			hypotheticalBoard = thinkBoard.copy();
 			hypotheticalBoard.move(move, Move.HYPOTHETICAL);
 			score = playStyle.evaluateGameState(hypotheticalBoard, player);
 			if (color == Color.BLACK) {

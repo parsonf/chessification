@@ -5,7 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import com.parsonf.chessification.Chess;
+import com.parsonf.chessification.Chessification;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame {
@@ -15,10 +15,10 @@ public class Window extends JFrame {
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(new Dimension(WIDTH, HEIGHT));
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setSize(new Dimension(dim.width, dim.height));
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		this.setTitle(Chess.APP_TITLE);
+		this.setTitle(Chessification.APP_TITLE);
 		this.setVisible(true);
 	}
 }
