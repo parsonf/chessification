@@ -9,11 +9,16 @@ public class Chessification {
 	public Game game;
 	
 	public Chessification() {
-		window = new Window();
-		game = new Game();
+		window = new Window(this);
+		game = new Game(this, GameType.AI_VS_AI);
 	}
 	
 	public static void main(String[] args) {
 		new Chessification();
+	}
+
+	public void newGame() {
+		// TODO: impl newGame()
+		
 	}
 }

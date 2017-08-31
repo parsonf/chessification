@@ -8,7 +8,6 @@ import com.parsonf.chessification.Color;
 import com.parsonf.chessification.Coord;
 import com.parsonf.chessification.Game;
 import com.parsonf.chessification.Move;
-import com.parsonf.chessification.Space;
 
 public class Player {
 	public static final boolean CHECK_CHECK = true;

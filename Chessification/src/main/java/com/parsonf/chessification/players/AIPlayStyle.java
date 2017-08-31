@@ -105,8 +105,6 @@ public class AIPlayStyle implements IPlayStyle {
 		{  20,  30,  10,   0,   0,  10,  30,  20 }
 	};
 	
-	private Player player;
-	
 	private final int PAWN = 0;
 	private final int ROOK = 1;
 	private final int KNIGHT = 2;
@@ -127,8 +125,8 @@ public class AIPlayStyle implements IPlayStyle {
 
 	// Constructors --------------------------------------------------------
 
-	public AIPlayStyle(Player player) {
-		this.player = player;
+	public AIPlayStyle() {
+		
 	}
 
 	// Methods -------------------------------------------------------------
@@ -142,7 +140,7 @@ public class AIPlayStyle implements IPlayStyle {
 		boolean isThreatened = false;
 		
 		// encourage checkmate, discourage stalemate
-		if (player.getAllLegalMoves(board, whoJustMoved.getOpponent(), Player.CHECK_CHECK, Player.CHECK_CASTLE).isEmpty()) {
+		if (whoJustMoved.getAllLegalMoves(board, whoJustMoved.getOpponent(), Player.CHECK_CHECK, Player.CHECK_CASTLE).isEmpty()) {
 			// if opponent is in check, then it is checkmate! value REALLY HIGH
 			// however, if not, then it is stalemate! value REALLY LOW
 			if (board.isPlayerInCheck(whoJustMoved.getOpponent())) {
