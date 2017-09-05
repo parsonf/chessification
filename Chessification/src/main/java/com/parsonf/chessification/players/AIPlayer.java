@@ -89,6 +89,9 @@ public class AIPlayer extends Player {
 		int bestScore = (color == Color.BLACK) ? 900000 : -900000;
 		Board hypotheticalBoard = null;
 		for (Move move: moves) {
+			if (move.getFrom().equals(new Coord(0,0)) && move.getTo().equals(new Coord(0,0))) {
+				int x = 5;
+			}
 			hypotheticalBoard = thinkBoard.copy();
 			hypotheticalBoard.move(move, Move.HYPOTHETICAL);
 			score = playStyle.evaluateGameState(hypotheticalBoard, player);

@@ -17,10 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import com.parsonf.chessification.Chessification;
+import com.parsonf.chessification.Coord;
+import com.parsonf.chessification.Move;
 import com.parsonf.chessification.ResourceLoader;
 
 public class Window extends JFrame {
@@ -64,11 +68,25 @@ public class Window extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				chessification.newGame();
+				chessification.resetLogicalBoardForNewGame();
 				setPiecesForStandardGame();
 			}
 		});
 		optionsPanel.add(newGameButton);
+		JButton takeTurnButton = new JButton("Take AI turn");
+		takeTurnButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				chessification.takeTurn();
+			}
+		});
+		optionsPanel.add(takeTurnButton);
+		JTextArea logConsole = new JTextArea(15, 30);
+		JScrollPane scrollPane = new JScrollPane(logConsole); 
+		logConsole.setBorder(loweredetched);
+		logConsole.setEditable(false);
+		optionsPanel.add(logConsole);
 		return optionsPanel;
 	}
 
@@ -172,5 +190,19 @@ public class Window extends JFrame {
 		pieceGrid[7][5].setIcon(new ImageIcon(loader.findResource(ResourceLoader.WHITE_BISHOP)));
 		pieceGrid[7][6].setIcon(new ImageIcon(loader.findResource(ResourceLoader.WHITE_KNIGHT)));
 		pieceGrid[7][7].setIcon(new ImageIcon(loader.findResource(ResourceLoader.WHITE_ROOK)));
+	}
+
+	public void makeChessMove(Move move) {
+		Coord moveFrom = convertLogicalCoordToGUICoord(move.getFrom());
+		Coord moveTo = convertLogicalCoordToGUICoord(move.getTo());
+		pieceGrid[moveTo.getCol()][moveTo.getRow()].setIcon(
+			pieceGrid[moveFrom.getCol()][moveFrom.getRow()].getIcon()
+		);
+		ResourceLoader loader = ResourceLoader.getInstance();
+		pieceGrid[moveFrom.getCol()][moveFrom.getRow()].setIcon(new ImageIcon(loader.findResource(ResourceLoader.VACANT_SPACE)));
+	}
+	
+	private Coord convertLogicalCoordToGUICoord(Coord logicalCoord) {
+		return new Coord(8 - logicalCoord.getRow(), 8 - logicalCoord.getCol());
 	}
 }

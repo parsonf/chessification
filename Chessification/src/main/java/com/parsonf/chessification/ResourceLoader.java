@@ -21,6 +21,7 @@ public class ResourceLoader {
 	public static final String VACANT_SPACE = "./vacant.png";
 	public static final String LIGHT_SPACE = "./space_light.png";
 	public static final String DARK_SPACE = "./space_dark.png";
+	public static final String VALID_MOVE = "./valid_move.png";
 
 	private static ResourceLoader resourceLoader;
 

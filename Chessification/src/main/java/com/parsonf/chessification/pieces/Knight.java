@@ -32,7 +32,7 @@ public class Knight extends Piece {
 		for (Coord possibleMove: possibleMoves) {
 			Coord moveToCoord = pos.add(possibleMove);
 			if (canMakeMove(board, pos, moveToCoord)) {
-				moves.add(new Move(pos, possibleMove));
+				moves.add(new Move(pos, moveToCoord));
 			}
 		}
 		return moves;

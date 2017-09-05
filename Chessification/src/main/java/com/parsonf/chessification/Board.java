@@ -51,7 +51,7 @@ public class Board {
 	}
 
 	/**
-	 * Sets the board up for a standard game of chess.
+	 * Clears and sets the board up for a standard game of chess.
 	 */
 	public void reset() {
 		// clear the board.
@@ -119,7 +119,6 @@ public class Board {
 	}
 
 	// Getters/Setters -----------------------------------------------------
-
 	public static boolean isValidCoord(Coord coord) {
 		if (coord.getRow() < Coord.ROW_MIN || coord.getRow() > Coord.ROW_MAX) {
 			return false;
@@ -133,7 +132,11 @@ public class Board {
 	public void move(Move move, boolean isActualMove) {
 		// TODO improve: handle en passant somehow. may need to redo some of this
 		// implementation.
-		Piece pieceToMove = getSpace(move.getFrom()).pickUpPiece();
+		Space space = getSpace(move.getFrom());
+		if (space == null) {
+			int x = 5;
+		}
+		Piece pieceToMove = space.pickUpPiece();
 		if (isActualMove) {
 			pieceToMove.setHasMoved();
 		}
@@ -173,6 +176,9 @@ public class Board {
 		Set<Move> opponentMoves = player.getAllLegalMoves(this, player.getOpponent(), Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
 		for (Move move : opponentMoves) {
 			Space space = getSpace(move.getTo());
+			if (space == null) {
+				int x = 5;
+			}
 			if (space.isOccupied() && space.getPiece() instanceof King) {
 				isPlayerInCheck = true;
 				break;

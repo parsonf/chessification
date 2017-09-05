@@ -57,4 +57,8 @@ public class Game {
 	public List<Move> getMoves() {
 		return moves;
 	}
+
+	public void resetBoardForNewGame() {
+		board.reset();
+	}
 }

@@ -4,19 +4,24 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import javax.swing.text.ChangedCharSetException;
+
 import org.junit.Test;
 
 import com.parsonf.chessification.Board;
+import com.parsonf.chessification.Chessification;
 import com.parsonf.chessification.Color;
 import com.parsonf.chessification.Coord;
 import com.parsonf.chessification.Game;
+import com.parsonf.chessification.GameType;
 import com.parsonf.chessification.Move;
 
 public class PlayerTest {
 
 	@Test
 	public void getAllLegalMoves_CheckCheckmatedPlayer_ReturnsEmptySet() {
-		Game game = new Game();
+		Chessification chess = new Chessification();
+		Game game = new Game(chess, GameType.AI_IS_BLACK);
 		Board board = game.getBoard();
 		Player white = game.getPlayer(Color.WHITE);
 		// let's check fool's mate. (2-move checkmate).
