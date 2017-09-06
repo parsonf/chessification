@@ -20,7 +20,8 @@ public class PlayerTest {
 
 	@Test
 	public void getAllLegalMoves_CheckCheckmatedPlayer_ReturnsEmptySet() {
-		Chessification chess = new Chessification();
+		// set up the test
+		Chessification chess = new Chessification(Chessification.NO_GUI);
 		Game game = new Game(chess, GameType.AI_IS_BLACK);
 		Board board = game.getBoard();
 		Player white = game.getPlayer(Color.WHITE);

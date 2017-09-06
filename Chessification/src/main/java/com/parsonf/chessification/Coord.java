@@ -38,6 +38,13 @@ public class Coord {
 
 	// methods --------------------------------------------------------------------------------
 	
+	/**
+	 * Returns a new Coord that adds the coord provided to this coord.
+	 * This coord remains unaffected.
+	 * 
+	 * @param b
+	 * @return
+	 */
 	public Coord add(Coord b) {
 		return new Coord(col + b.col, row + b.row);
 	}
@@ -57,6 +64,44 @@ public class Coord {
 	@Override
 	public int hashCode() {
 		return Objects.hash(col, row);
+	}
+	
+	@Override
+	public String toString() {
+		return getColLetter(col) + String.valueOf(row);
+	}
+	
+	private String getColLetter(int colAsNumber) {
+		String letter = "";
+		switch (colAsNumber) {
+		case 1:
+			letter = "A";
+			break;
+		case 2:
+			letter = "B";
+			break;
+		case 3:
+			letter = "C";
+			break;
+		case 4:
+			letter = "D";
+			break;
+		case 5:
+			letter = "E";
+			break;
+		case 6:
+			letter = "F";
+			break;
+		case 7:
+			letter = "G";
+			break;
+		case 8:
+			letter = "H";
+			break;
+		default:
+			throw new RuntimeException("Invalid colAsNumber");
+		}
+		return letter;
 	}
 
 	// getters and setters -------------------------------------------------------------------

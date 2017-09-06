@@ -29,15 +29,15 @@ public class Pawn extends Piece {
 			new Coord(-1,1)
 		};
 		for (Coord possibleMove: possibleMoves) {
-			if (canMakeMove(board, pos, possibleMove)) {
+			if (pawnCanMove(board, pos, possibleMove)) {
 				moves.add(new Move(pos, possibleMove));
 			}
 		}
 		return moves;
 	}
 	
-	@Override
-	public boolean canMakeMove(Board board, Coord fromCoord, Coord coordMovingTo) {
+	
+	private boolean pawnCanMove(Board board, Coord fromCoord, Coord coordMovingTo) {
 		final boolean NOT_A_VALID_SPACE = false;
 		final boolean CANT_MOVE_TWO_ALREADY_MOVED = false;
 		final boolean CANT_MOVE_TWO_BLOCKED_BY_PIECE = false;

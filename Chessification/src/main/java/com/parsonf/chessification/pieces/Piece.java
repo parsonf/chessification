@@ -30,38 +30,44 @@ public abstract class Piece {
 	 */	
 	public Set<Move> lineMovement(Board board, Coord pos, Coord vector) {
 		if (!Board.isValidCoord(pos)) {
-			throw new IllegalArgumentException("Given position is not on the board! pos: " + pos.toString());
+			throw new IllegalArgumentException("Given position is not on the board! pos: " + pos.getCol() + ", " + pos.getRow());
 		}
 		final boolean vectorIsValid = !(vector.getCol() == 0 && vector.getRow() == 0);
 		if (!vectorIsValid) {
 			throw new IllegalArgumentException("Vector needs a direction! Cannot be (0,0).");
 		}
 		Set<Move> moves = new HashSet<Move>();
+		
 		Coord moveToPos = pos.add(vector);
-		// if the position to move to is not valid, return empty moves.
-		if (!Board.isValidCoord(moveToPos)) {
-			return moves;
-		}
-		// if there was no piece at this space, then it is a valid move for line movement.
-		// therefore, add it, and continue looking in that direction for more moves.
-		if (!board.getSpace(moveToPos).isOccupied()) {
-			moves.add(new Move(pos, moveToPos));
-			int colIncrease = vector.getCol() == 0 ? 0 : vector.getCol() + (vector.getCol()/Math.abs(vector.getCol()));
-			int rowIncrease = vector.getRow() == 0 ? 0 : vector.getRow() + (vector.getRow()/Math.abs(vector.getRow()));
-			moves.addAll(lineMovement(board, pos, vector.add(new Coord(colIncrease, rowIncrease))));
-			return moves;
-		} else {
-			// if there is a friendly piece at this space, then you cannot move there.
-			// but if it is NOT friendly color, then it is ENEMY color, and you CAN move there, but no further.
-			if (board.getSpace(moveToPos).getPiece().getColor() != color) {
+		while (Board.isValidCoord(moveToPos)) {
+			// if there was no piece at this space, then it is a valid move for line movement.
+			// therefore, add it, and continue looking in that direction for more moves.
+			if (!board.getSpace(moveToPos).isOccupied()) {
 				moves.add(new Move(pos, moveToPos));
-			} 
+			} else {
+				// this space is occupied, so we'll need to break out of this loop no matter what.
+				// however, is this piece occupying this space friendly or foe?
+				// if it's an enemy, we can move here but no further.
+				if (board.getSpace(moveToPos).getPiece().getColor() != color) {
+					moves.add(new Move(pos, moveToPos));
+				}
+				break;
+			}
+			moveToPos = moveToPos.add(vector);
 		}
 		return moves;
 	}
 
-
-	public boolean canMakeMove(Board board, Coord fromCoord, Coord targetCoord) {
+	/**
+	 * Determines if the target is a valid space on the board, occupied
+	 * by friendly, enemy, or vacant. Returns true if the target
+	 * 
+	 * @param board
+	 * @param fromCoord
+	 * @param targetCoord
+	 * @return
+	 */
+	public boolean canMakeMove(Board board, Coord targetCoord) {
 		final boolean NOT_A_VALID_SPACE = false;
 		final boolean SPACE_OCCUPIED_BY_OWN_COLOR = false;
 		final boolean SPACE_IS_VACANT = true;

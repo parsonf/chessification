@@ -39,6 +39,11 @@ public class Move {
 	public int hashCode() {
 		return Objects.hash(from, to);
 	}
+	
+	@Override
+	public String toString() {
+		return from.toString() + " -> " + to.toString();
+	}
 
 	// getters and setters -------------------------------------------------------------------
 	public Coord getFrom() {

@@ -49,6 +49,14 @@ public class Board {
 
 		return clone;
 	}
+	
+	public void setDownPiece(Piece piece, Coord coord) {
+		if (isValidCoord(coord)) {
+			getSpace(coord).setPiece(piece);
+		} else {
+			throw new RuntimeException("Cannot set piece down because the provided coord is invalid.");
+		}
+	}
 
 	/**
 	 * Clears and sets the board up for a standard game of chess.
@@ -119,6 +127,12 @@ public class Board {
 	}
 
 	// Getters/Setters -----------------------------------------------------
+	/**
+	 * Determines if the provided coord is a legal coord on a chess board.
+	 * 
+	 * @param coord
+	 * @return
+	 */
 	public static boolean isValidCoord(Coord coord) {
 		if (coord.getRow() < Coord.ROW_MIN || coord.getRow() > Coord.ROW_MAX) {
 			return false;
@@ -133,9 +147,7 @@ public class Board {
 		// TODO improve: handle en passant somehow. may need to redo some of this
 		// implementation.
 		Space space = getSpace(move.getFrom());
-		if (space == null) {
-			int x = 5;
-		}
+		// TODO FIX BUG: sometimes space is null.
 		Piece pieceToMove = space.pickUpPiece();
 		if (isActualMove) {
 			pieceToMove.setHasMoved();
