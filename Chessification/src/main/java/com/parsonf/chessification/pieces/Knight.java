@@ -29,9 +29,10 @@ public class Knight extends Piece {
 			new Coord(-2, 1),
 			new Coord(-2, -1)
 		};
+		boolean color = board.getSpace(pos).getPiece().getColor();
 		for (Coord possibleMove: possibleMoves) {
 			Coord moveToCoord = pos.add(possibleMove);
-			if (canMakeMove(board, moveToCoord)) {
+			if (board.isValidCoordNotOccupiedByFriendly(color, moveToCoord)) {
 				moves.add(new Move(pos, moveToCoord));
 			}
 		}

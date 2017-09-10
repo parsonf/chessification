@@ -1,5 +1,6 @@
 package com.parsonf.chessification;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.parsonf.chessification.pieces.Bishop;
@@ -14,6 +15,7 @@ import com.parsonf.chessification.players.Player;
 public class Board {
 
 	private Space[][] board;
+	private int score;
 
 	// Constructors --------------------------------------------------------
 	public Board() {
@@ -143,11 +145,23 @@ public class Board {
 		return true;
 	}
 
+	/**
+	 * Performs the given move on the board.
+	 * If the move is an actual move, then the piece is recorded to have moved.
+	 * @param move
+	 * @param isActualMove
+	 */
 	public void move(Move move, boolean isActualMove) {
+		if (move == null || move.getFrom() == null || move.getTo() == null) {
+			throw new IllegalArgumentException("Board.move arg 'move': " + move);
+		}
 		// TODO improve: handle en passant somehow. may need to redo some of this
 		// implementation.
 		Space space = getSpace(move.getFrom());
 		// TODO FIX BUG: sometimes space is null.
+		if (space == null) {
+			int x = 5;
+		}
 		Piece pieceToMove = space.pickUpPiece();
 		if (isActualMove) {
 			pieceToMove.setHasMoved();
@@ -185,7 +199,7 @@ public class Board {
 		// which is fortunate, because checking for it would likely result in
 		// another infinite loop.
 		boolean isPlayerInCheck = false;
-		Set<Move> opponentMoves = player.getAllLegalMoves(this, player.getOpponent(), Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
+		Set<Move> opponentMoves = player.getOpponent().getAllLegalMoves(this, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
 		for (Move move : opponentMoves) {
 			Space space = getSpace(move.getTo());
 			if (space == null) {
@@ -198,6 +212,28 @@ public class Board {
 		}
 		return isPlayerInCheck;
 	}
+	
+	public boolean isValidCoordNotOccupiedByFriendly(boolean color, Coord targetCoord) {
+		final boolean NOT_A_VALID_SPACE = false;
+		final boolean SPACE_OCCUPIED_BY_OWN_COLOR = false;
+		final boolean SPACE_IS_VACANT = true;
+		final boolean CAN_CAPTURE_ENEMY = true;
+		
+		if (Board.isValidCoord(targetCoord)) {
+			Space targetSpace = getSpace(targetCoord);
+			if (targetSpace.isOccupied()) {
+				if (targetSpace.getPiece().getColor() != color) {
+					return CAN_CAPTURE_ENEMY;
+				} else {
+					return SPACE_OCCUPIED_BY_OWN_COLOR;
+				}
+			} else {
+				return SPACE_IS_VACANT;
+			}
+		} else {
+			return NOT_A_VALID_SPACE;
+		}
+	}
 
 	/**
 	 * Checks if a space is threatened by an opponent.
@@ -208,7 +244,7 @@ public class Board {
 	 */
 	public boolean isPlayerThreatenedAtCoord(Player player, Coord coord) {
 		boolean isThreatened = false;
-		Set<Move> moves = player.getAllLegalMoves(this, player, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
+		Set<Move> moves = player.getAllLegalMoves(this, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
 		for (Move move : moves) {
 			if (move.getTo().equals(coord)) {
 				isThreatened = true;
@@ -216,6 +252,42 @@ public class Board {
 			}
 		}
 		return isThreatened;
+	}
+
+	public boolean hasPieces(boolean color) {
+		boolean hasPieces = false;
+		for (int col = Coord.COL_MIN; col <= Coord.COL_MAX; col++) {
+			for (int row = Coord.ROW_MIN; row <= Coord.ROW_MAX; row++) {
+				Piece piece = getSpace(col, row).getPiece();
+				if (piece != null && piece.getColor() == color) {
+					hasPieces = true;
+					break;
+				}
+			}
+		}
+		return hasPieces;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public Set<Coord> getMovesForPieceAtCoord(Coord coord) {
+		Set<Coord> destinations = new HashSet<Coord>();
+		if (Board.isValidCoord(coord)
+		 && getSpace(coord).isOccupied())
+		{
+			Piece piece = getSpace(coord).getPiece();
+			Set<Move> moves = piece.getAvailableMoves(this, coord);
+			for (Move move : moves) {
+				destinations.add(move.getTo());
+			}
+		}
+		return destinations;
 	}
 
 }

@@ -2,7 +2,7 @@ package com.parsonf.chessification;
 
 import java.util.List;
 
-import com.parsonf.chessification.players.AIPlayStyle;
+import com.parsonf.chessification.players.BrianAIPlayStyle;
 import com.parsonf.chessification.players.AIPlayer;
 import com.parsonf.chessification.players.Player;
 
@@ -27,15 +27,15 @@ public class Game {
 		switch (gameType) {
 		case AI_IS_BLACK:
 			whitePlayer = new Player(this, Color.WHITE);
-			blackPlayer = new AIPlayer(this, Color.BLACK, new AIPlayStyle());
+			blackPlayer = new AIPlayer(this, Color.BLACK, new BrianAIPlayStyle());
 			break;
 		case AI_IS_WHITE:
-			whitePlayer = new AIPlayer(this, Color.WHITE, new AIPlayStyle());
+			whitePlayer = new AIPlayer(this, Color.WHITE, new BrianAIPlayStyle());
 			blackPlayer = new Player(this, Color.BLACK);
 			break;
 		case AI_VS_AI:
-			whitePlayer = new AIPlayer(this, Color.WHITE, new AIPlayStyle());
-			blackPlayer = new AIPlayer(this, Color.BLACK, new AIPlayStyle());
+			whitePlayer = new AIPlayer(this, Color.WHITE, new BrianAIPlayStyle());
+			blackPlayer = new AIPlayer(this, Color.BLACK, new BrianAIPlayStyle());
 			break;
 		case NO_AI:
 			whitePlayer = new Player(this, Color.WHITE);

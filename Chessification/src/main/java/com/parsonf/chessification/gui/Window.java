@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -37,6 +38,7 @@ public class Window extends JFrame {
 	
 	private JLayeredPane layeredPane;
 	private JButton[][] pieceGrid;
+	private JButton[][] highlightGrid;
 	private JButton[][] boardGrid;
 	
 	public Window(Chessification chessification) {
@@ -123,13 +125,45 @@ public class Window extends JFrame {
 		}
 		layeredPane.add(boardContainer, new Integer(1));
 		
+		// build the highlightGrid
+		JPanel highlightContainer = new JPanel();
+		highlightContainer.setOpaque(false);
+		highlightContainer.setLayout(new BoxLayout(highlightContainer, BoxLayout.Y_AXIS));
+		highlightContainer.setSize(new Dimension(800,720));
+		highlightGrid = new JButton[8][8];
+		URL vacantUrl = loader.findResource(ResourceLoader.VACANT_SPACE);
+		for (int y=0; y<8; y++) {
+			JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+			panel.setSize(800, 90);
+			panel.setOpaque(false);
+			for (int x=0; x<8; x++) {
+				JButton button = highlightGrid[y][x] = new JButton();
+				button.setPreferredSize(new Dimension(100, 90));
+				button.setBorderPainted(false);
+				// be transparent
+				button.setOpaque(false);
+				button.setContentAreaFilled(false);
+				button.setBorderPainted(false);
+				try {
+					Image image = ImageIO.read(vacantUrl);
+					button.setIcon(new ImageIcon(image));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				panel.add(button);
+			}
+			highlightGrid[0][7].setIcon(new ImageIcon(loader.findResource(ResourceLoader.VALID_MOVE)));
+			highlightContainer.add(panel);
+		}
+		layeredPane.add(highlightContainer, new Integer(2));
+		layeredPane.setPreferredSize(new Dimension(800, 720));
+		
 		// build the pieceGrid
 		JPanel pieceContainer = new JPanel();
 		pieceContainer.setOpaque(false);
 		pieceContainer.setLayout(new BoxLayout(pieceContainer, BoxLayout.Y_AXIS));
 		pieceContainer.setSize(new Dimension(800, 720));
 		pieceGrid = new JButton[8][8];
-		URL vacantUrl = loader.findResource(ResourceLoader.VACANT_SPACE);
 		for (int y=0; y<8; y++) {
 			JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 			panel.setSize(800, 90);
@@ -149,10 +183,28 @@ public class Window extends JFrame {
 					e.printStackTrace();
 				}
 				panel.add(button);
+				
+				final int col = y;
+				final int row = x;
+				pieceGrid[y][x].addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						for (int a=0; a<8; a++) {
+							for (int b=0; b<8; b++) {
+								highlightGrid[a][b].setIcon(new ImageIcon(loader.findResource(ResourceLoader.VACANT_SPACE)));
+							}
+						}
+						Set<Coord> destinations = chessification.getMovesForPieceAtCoord(new Coord(col,row));
+						for (Coord d : destinations) {
+							highlightGrid[d.getCol()][d.getRow()].setIcon(
+									new ImageIcon(loader.findResource(ResourceLoader.VALID_MOVE)));
+						}
+					}
+				});
 			}
 			pieceContainer.add(panel);
 		}
-		layeredPane.add(pieceContainer, new Integer(2));
+		layeredPane.add(pieceContainer, new Integer(3));
 		layeredPane.setPreferredSize(new Dimension(800, 720));
 		
 		// and finish up
@@ -193,16 +245,10 @@ public class Window extends JFrame {
 	}
 
 	public void makeChessMove(Move move) {
-		Coord moveFrom = convertLogicalCoordToGUICoord(move.getFrom());
-		Coord moveTo = convertLogicalCoordToGUICoord(move.getTo());
-		pieceGrid[moveTo.getCol()][moveTo.getRow()].setIcon(
-			pieceGrid[moveFrom.getCol()][moveFrom.getRow()].getIcon()
+		pieceGrid[move.getTo().getCol()][move.getTo().getRow()].setIcon(
+			pieceGrid[move.getFrom().getCol()][move.getFrom().getRow()].getIcon()
 		);
 		ResourceLoader loader = ResourceLoader.getInstance();
-		pieceGrid[moveFrom.getCol()][moveFrom.getRow()].setIcon(new ImageIcon(loader.findResource(ResourceLoader.VACANT_SPACE)));
-	}
-	
-	private Coord convertLogicalCoordToGUICoord(Coord logicalCoord) {
-		return new Coord(8 - logicalCoord.getRow(), 8 - logicalCoord.getCol());
+		pieceGrid[move.getFrom().getCol()][move.getFrom().getRow()].setIcon(new ImageIcon(loader.findResource(ResourceLoader.VACANT_SPACE)));
 	}
 }

@@ -1,5 +1,8 @@
 package com.parsonf.chessification;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.parsonf.chessification.gui.Window;
 import com.parsonf.chessification.players.AIPlayer;
 
@@ -27,13 +30,13 @@ public class Chessification {
 		AIPlayer aiBlack = (AIPlayer) game.getPlayer(Color.BLACK);
 		Move move = null;
 		if (whoseTurnItIs == Color.BLACK) {
-			move = aiBlack.minimaxDepthFirst(game.getBoard().copy(), aiBlack, 4);
+			move = aiBlack.getBestMove(game.getBoard());
 		} else {
-			move = aiWhite.minimaxDepthFirst(game.getBoard().copy(), aiWhite, 4);
+			move = aiWhite.getBestMove(game.getBoard());
 		}
 		game.getBoard().move(move, Move.ACTUAL);
 		if (gui) {
-			window.makeChessMove(move);
+			window.makeChessMove(convertLogicalMoveToGUIMove(move));
 		}
 		whoseTurnItIs = !whoseTurnItIs;
 	}
@@ -49,4 +52,29 @@ public class Chessification {
 	public Game getGame() {
 		return game;
 	}
+
+	public Set<Coord> getMovesForPieceAtCoord(Coord guiCoord) {
+		Set<Coord> coords = game.getBoard().getMovesForPieceAtCoord(convertGUICoordToLogicalCoord(guiCoord));
+		Set<Coord> guiCoords = new HashSet<Coord>();
+		for (Coord coord : coords) {
+			guiCoords.add(convertLogicalCoordToGUICoord(coord));
+		}
+		return guiCoords;
+	}
+	
+	protected Coord convertLogicalCoordToGUICoord(Coord logicalCoord) {
+		return new Coord(8 - logicalCoord.getRow(), logicalCoord.getCol() - 1);
+	}
+	protected Coord convertGUICoordToLogicalCoord(Coord guiCoord) {
+		return new Coord(1 + guiCoord.getRow(), 8 - guiCoord.getCol());
+	}
+	protected Move convertLogicalMoveToGUIMove(Move logicalMove) {
+		return new Move(convertLogicalCoordToGUICoord(logicalMove.getFrom()), 
+						convertLogicalCoordToGUICoord(logicalMove.getTo()));
+	}
+	protected Move convertGUIMoveToLogicalMove(Move guiMove) {
+		return new Move(convertGUICoordToLogicalCoord(guiMove.getFrom()),
+						convertGUICoordToLogicalCoord(guiMove.getTo()));
+	}
+	
 }

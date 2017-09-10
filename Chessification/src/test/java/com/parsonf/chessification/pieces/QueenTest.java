@@ -37,7 +37,7 @@ public class QueenTest {
 		// D1, D2, D3, D5, D6, D7, D8, A4, B4, C4, E4, F4, G4, H4
 		// C3, B2, A1, C5, B6, A7, E5, F6, G7, H8, E3, F2, G1
 		// That is twenty seven moves.
-		System.out.println(destinations);
+		//System.out.println("queen destinations: " + destinations);
 		//assertTrue("There should be exactly 27 moves that this queen can make.", destinations.size() == 27);
 		// Now we will verify each one of those moves.
 		assertTrue("Lone D4 queen can move to D1.", destinations.contains(new Coord(Coord.COL_D, Coord.ROW_1)));

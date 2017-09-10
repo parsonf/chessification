@@ -38,31 +38,27 @@ public class Player {
 	 * @param checkCastle
 	 * @return
 	 */
-	public Set<Move> getAllLegalMoves(Board board, Player player, boolean checkCheck, boolean checkCastle) {
+	public Set<Move> getAllLegalMoves(Board board, boolean checkCheck, boolean checkCastle) {
 		Set<Move> moves = new HashSet<Move>();
 		
 		for (int col=Coord.COL_MIN; col<=Coord.COL_MAX; col++) {
 			for(int row=Coord.ROW_MIN; row<=Coord.ROW_MAX; row++) {
 				Coord coord = new Coord(col, row);
-				// we are looping through each piece.
+				// we are looping through each coord, looking for a piece.
 				if (!board.getSpace(coord).isOccupied()) {
 					// this is just a space. next.
 					continue;
 				} else {
 					// we found a piece...
-					try {
-						if (board.getSpace(coord).getPiece().getColor() == player.color) {
-							// if the piece we found is the color we want...
-							moves.addAll(getLegalMoves(coord));
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
+					if (board.getSpace(coord).getPiece().getColor() == color) {
+						// if the piece we found is the color we want...
+						moves.addAll(getLegalMoves(coord));
 					}
 				}
 			}
 		}
 		if (checkCastle) {
-			moves.addAll(getCastleMoves(player));
+			moves.addAll(getCastleMoves(this));
 		}
 		if (checkCheck) {
 			moves.removeAll(findCheckedMoves(moves));
@@ -182,7 +178,6 @@ public class Player {
 
 
 	private Set<Move> getLegalMoves(Coord coord) {
-		
 		Board board = game.getBoard();
 		return board.getSpace(coord).getPiece().getAvailableMoves(board, coord);
 	}

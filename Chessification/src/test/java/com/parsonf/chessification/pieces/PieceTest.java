@@ -284,87 +284,9 @@ public class PieceTest {
 		//board.setDownPiece(pawn, fromPos); // <-- when no piece is set down.
 		Coord toPos = new Coord(Coord.COL_E, Coord.ROW_4);
 		try {
-			rook.canMakeMove(board, toPos);
+			board.isValidCoordNotOccupiedByFriendly(Color.WHITE, toPos);
 		} catch (IllegalArgumentException iae) {
 			assertTrue(testMessage, true);
 		}
-	}
-	
-	@Test
-	public void canMakeMove_TargetPosVacant_ReturnsTrue() {
-		final String testMessage = "piece.canMakeMove should return true when target position is vacant.";
-		board.clear();
-		Piece rook = new Rook(Color.WHITE);
-		board.setDownPiece(rook, new Coord(Coord.COL_H, Coord.ROW_8));
-		// wildly illegal move by rook, just to reiterate that
-		// "canMakeMove" does not test if the move is legal, but rather
-		// simply if the target position is a) a legal spot on the board,
-		// and b) vacant or enemy-occupied.
-		assertTrue(testMessage, rook.canMakeMove(board, new Coord(Coord.COL_B, Coord.ROW_2)));
-	}
-	
-	@Test
-	public void canMakeMove_NonPawnTargetPosEnemy_ReturnsTrue() {
-		// TODO: impl test canMakeMove_NonPawnTargetEnemy_ReturnsTrue
-	}
-	
-	@Test
-	public void canMakeMove_NonPawnTargetPosFriendly_ReturnsFalse() {
-		// TODO: impl test canMakeMove_NonPawnTargetFriendly_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCanCaptureLeft_ReturnsTrue() {
-		// TODO: impl test canMakeMove_PawnCanCaptureLeft_ReturnsTrue
-	}
-	
-	@Test
-	public void canMakeMove_PawnCanCaptureRight_ReturnsTrue() {
-		// TODO: impl test canMakeMove_PawnCanCaptureRight_ReturnsTrue
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotCaptureLeftFriendly_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotCaptureLeftFriendly_ReturnsFalse()
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotCaptureRightFriendly_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotCaptureRightFriendly_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotCaptureLeftEmpty_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotCaptureLeftEmpty_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotCaptureRightEmpty_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotCaptureRightEmpty_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotMoveTwoAlreadyMoved_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotMoveTwoAlreadyMoved_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotMoveTwoBlocked_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotMoveTwoBlocked_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCannotMoveOneBlocked_ReturnsFalse() {
-		// TODO: impl test canMakeMove_PawnCannotMoveOneBlocked_ReturnsFalse
-	}
-	
-	@Test
-	public void canMakeMove_PawnCanMoveOneEmpty_ReturnsTrue() {
-		// TODO: impl test canMakeMove_PawnCanMoveOneEmpty_ReturnsTrue
-	}
-	
-	@Test
-	public void canMakeMove_PawnCanMoveTwoUnmoved_ReturnsTrue() {
-		// TODO: impl test canMakeMove_PawnCanMoveOneEmpty_ReturnsTrue
 	}
 }

@@ -99,7 +99,7 @@ public class Coord {
 			letter = "H";
 			break;
 		default:
-			throw new RuntimeException("Invalid colAsNumber");
+			return String.valueOf(colAsNumber);
 		}
 		return letter;
 	}

@@ -17,6 +17,10 @@ public class King extends Piece {
 
 	// Methods -------------------------------------------------------------
 
+	/**
+	 * Gets a list of all the legal moves, that is, without consideration
+	 * of check.
+	 */
 	@Override
 	public Set<Move> getAvailableMoves(Board board, Coord pos) {
 		Set<Move> moves = new HashSet<Move>();
@@ -25,9 +29,10 @@ public class King extends Piece {
 				new Coord(-1, 0),					new Coord(1, 0),
 				new Coord(-1,-1), new Coord(0,-1),  new Coord(1, -1)
 		};
+		boolean color = board.getSpace(pos).getPiece().getColor();
 		for (Coord possibleMove: possibleMoves) {
 			Coord moveToCoord = pos.add(possibleMove);
-			if(canMakeMove(board, moveToCoord)) {
+			if(board.isValidCoordNotOccupiedByFriendly(color, moveToCoord)) {
 				moves.add(new Move(pos, moveToCoord));
 			}
 		}

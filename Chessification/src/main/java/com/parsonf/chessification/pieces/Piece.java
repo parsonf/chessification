@@ -57,37 +57,6 @@ public abstract class Piece {
 		}
 		return moves;
 	}
-
-	/**
-	 * Determines if the target is a valid space on the board, occupied
-	 * by friendly, enemy, or vacant. Returns true if the target
-	 * 
-	 * @param board
-	 * @param fromCoord
-	 * @param targetCoord
-	 * @return
-	 */
-	public boolean canMakeMove(Board board, Coord targetCoord) {
-		final boolean NOT_A_VALID_SPACE = false;
-		final boolean SPACE_OCCUPIED_BY_OWN_COLOR = false;
-		final boolean SPACE_IS_VACANT = true;
-		final boolean CAN_CAPTURE_ENEMY = true;
-		
-		if (Board.isValidCoord(targetCoord)) {
-			Space targetSpace = board.getSpace(targetCoord);
-			if (targetSpace.isOccupied()) {
-				if (targetSpace.getPiece().getColor() != color) {
-					return CAN_CAPTURE_ENEMY;
-				} else {
-					return SPACE_OCCUPIED_BY_OWN_COLOR;
-				}
-			} else {
-				return SPACE_IS_VACANT;
-			}
-		} else {
-			return NOT_A_VALID_SPACE;
-		}
-	}
 	
 	public abstract Piece copy();
 	

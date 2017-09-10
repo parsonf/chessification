@@ -25,12 +25,12 @@ public class KingTest {
 	}
 	
 	@Test
-	public void getAvailableMoves_StaleMatedKing_ReturnsNoMoves() {
+	public void getAvailableMoves_StaleMatedKing_ReturnsMovesIgnoresCheck() {
+		final String testMessage = "getAvailableMoves returns moves with no regard for stalemate.";
 		//   O   R   O   R
 		//   R   O   O   O
 		//   O   O   K   O
 		//   R   O   O   O
-		
 		board.clear();
 		King king = new King(Color.WHITE);
 		Coord kingPos = new Coord(Coord.COL_E, Coord.ROW_4);
@@ -44,16 +44,16 @@ public class KingTest {
 		board.setDownPiece(d6Rook, new Coord(Coord.COL_D, Coord.ROW_6));
 		board.setDownPiece(f6Rook, new Coord(Coord.COL_F, Coord.ROW_6));
 		Set<Move> kingMoves = king.getAvailableMoves(board, kingPos);
-		assertTrue("king.getAvailableMoves returns no moves when king is stalemated.", kingMoves.isEmpty());
+		assertTrue(testMessage, kingMoves.size() == 8);
 	}
 	
 	@Test
-	public void getAvailableMoves_CheckMatedKing_ReturnsNoMoves() {
+	public void getAvailableMoves_CheckMatedKing_ReturnsMovesIgnoresCheck() {
+		final String testMessage = "getAvailableMoves returns moves with no regard for checkmate.";
 		//   O   R   R   R
 		//   R   O   O   O
 		//   R   O   K   O
 		//   R   O   O   O
-		
 		board.clear();
 		King king = new King(Color.WHITE);
 		Coord kingPos = new Coord(Coord.COL_E, Coord.ROW_4);
@@ -71,7 +71,7 @@ public class KingTest {
 		board.setDownPiece(e6Rook, new Coord(Coord.COL_E, Coord.ROW_6));
 		board.setDownPiece(f6Rook, new Coord(Coord.COL_F, Coord.ROW_6));
 		Set<Move> kingMoves = king.getAvailableMoves(board, kingPos);
-		assertTrue("king.getAvailableMoves returns no moves when king is checkmated.", kingMoves.isEmpty());
+		assertTrue(testMessage, kingMoves.size() == 8);
 	}
 	
 	@Test
@@ -110,12 +110,12 @@ public class KingTest {
 		king.getAvailableMoves(board, kingPos).forEach(move -> destinations.add(move.getTo()));
 		assertTrue("Lone king should have 8 moves.", destinations.size() == 8);
 		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_D, Coord.ROW_3)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_C, Coord.ROW_3)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_C, Coord.ROW_4)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_C, Coord.ROW_5)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_D, Coord.ROW_5)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_5)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_4)));
-		assertTrue("Lone d4 king can move to d3.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_3)));
+		assertTrue("Lone d4 king can move to c3.", destinations.contains(new Coord(Coord.COL_C, Coord.ROW_3)));
+		assertTrue("Lone d4 king can move to c4.", destinations.contains(new Coord(Coord.COL_C, Coord.ROW_4)));
+		assertTrue("Lone d4 king can move to c5.", destinations.contains(new Coord(Coord.COL_C, Coord.ROW_5)));
+		assertTrue("Lone d4 king can move to d5.", destinations.contains(new Coord(Coord.COL_D, Coord.ROW_5)));
+		assertTrue("Lone d4 king can move to e5.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_5)));
+		assertTrue("Lone d4 king can move to d4.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_4)));
+		assertTrue("Lone d4 king can move to e3.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_3)));
 	}
 }

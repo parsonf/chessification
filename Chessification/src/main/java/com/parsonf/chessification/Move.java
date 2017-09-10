@@ -3,11 +3,10 @@ package com.parsonf.chessification;
 import java.util.Objects;
 
 public class Move {
-	public static final boolean HYPOTHETICAL = true;
-	public static final boolean ACTUAL = false;
+	public static final boolean HYPOTHETICAL = false;
+	public static final boolean ACTUAL = true;
 	private Coord from;
 	private Coord to;
-	private int score;
 
 	// constructors --------------------------------------------------------------------------
 	
@@ -23,7 +22,6 @@ public class Move {
 	public Move(Coord from, Coord to, int score) {
 		this.from = from;
 		this.to = to;
-		this.score = score;
 	}
 	// methods --------------------------------------------------------------------------------
 	
@@ -61,14 +59,4 @@ public class Move {
 	public void setTo(Coord to) {
 		this.to = to;
 	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-	
-	
 }
