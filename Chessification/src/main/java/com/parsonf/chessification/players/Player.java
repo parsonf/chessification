@@ -33,7 +33,6 @@ public class Player {
 	 * which would lead to an infinite loop.
 	 * 
 	 * @param board
-	 * @param player
 	 * @param checkCheck
 	 * @param checkCastle
 	 * @return
@@ -52,16 +51,16 @@ public class Player {
 					// we found a piece...
 					if (board.getSpace(coord).getPiece().getColor() == color) {
 						// if the piece we found is the color we want...
-						moves.addAll(getLegalMoves(coord));
+						moves.addAll(getLegalMoves(board, coord));
 					}
 				}
 			}
 		}
 		if (checkCastle) {
-			moves.addAll(getCastleMoves(this));
+			moves.addAll(getCastleMoves(board, this));
 		}
 		if (checkCheck) {
-			moves.removeAll(findCheckedMoves(moves));
+			moves.removeAll(findCheckedMoves(board, moves));
 		}
 		
 		return moves;
@@ -74,15 +73,17 @@ public class Player {
 	 * @param color
 	 * @return
 	 */
-	private Set<Move> findCheckedMoves(Set<Move> moves) {
-		Board board;
+	private Set<Move> findCheckedMoves(Board board, Set<Move> moves) {
+		Board thinkBoard;
 		Set<Move> movesToRemove = new HashSet<Move>();
 		for (Move move: moves) {
-			board = game.getBoard().copy();
-			if (board.isPlayerInCheck(this)) {
+			thinkBoard = board.copy();
+			thinkBoard.move(move, Move.ACTUAL);
+			if (thinkBoard.isPlayerInCheck(this)) {
 				movesToRemove.add(move);
 			}
 		}
+		//System.out.println("movesToRemove: "  + movesToRemove);
 		return movesToRemove;
 	}
 
@@ -94,14 +95,13 @@ public class Player {
 	 * @param color
 	 * @return
 	 */
-	private Set<Move> getCastleMoves(Player player) {
+	private Set<Move> getCastleMoves(Board board, Player player) {
 		Set<Move> moves = new HashSet<Move>();
 		// Conditions for castling to be available:
 		// 1. King must not have moved.
 		// 2. Rook must not have moved.
 		// 3. Spaces inbetween must be clear.
 		// 4. King, rook, and spaces inbetween must not be threatened.
-		Board board = game.getBoard();
 		if (player.color == Color.WHITE) {
 			Coord e1 = new Coord(Coord.COL_E, Coord.ROW_1);
 			Coord h1 = new Coord(Coord.COL_H, Coord.ROW_1);
@@ -111,10 +111,10 @@ public class Player {
 				Coord g1 = new Coord(Coord.COL_G, Coord.ROW_1);
 				if (!board.getSpace(f1).isOccupied()
 				 && !board.getSpace(g1).isOccupied()) {
-					if (!board.isPlayerThreatenedAtCoord(player, e1)
-					 && !board.isPlayerThreatenedAtCoord(player, f1)
-					 && !board.isPlayerThreatenedAtCoord(player, g1)
-					 && !board.isPlayerThreatenedAtCoord(player, h1)) {
+					if (!player.isThreatenedAtCoord(board, e1)
+					 && !player.isThreatenedAtCoord(board, f1)
+					 && !player.isThreatenedAtCoord(board, g1)
+					 && !player.isThreatenedAtCoord(board, h1)) {
 						moves.add(new Move(e1, g1));
 					}
 				}
@@ -128,11 +128,11 @@ public class Player {
 				if (!board.getSpace(b1).isOccupied()
 				 && !board.getSpace(c1).isOccupied()
 				 && !board.getSpace(d1).isOccupied()) {
-					if (!board.isPlayerThreatenedAtCoord(player, a1)
-					 && !board.isPlayerThreatenedAtCoord(player, b1)
-					 && !board.isPlayerThreatenedAtCoord(player, c1)
-					 && !board.isPlayerThreatenedAtCoord(player, d1)
-					 && !board.isPlayerThreatenedAtCoord(player, e1)) {
+					if (!player.isThreatenedAtCoord(board, a1)
+					 && !player.isThreatenedAtCoord(board, b1)
+					 && !player.isThreatenedAtCoord(board, c1)
+					 && !player.isThreatenedAtCoord(board, d1)
+					 && !player.isThreatenedAtCoord(board, e1)) {
 						moves.add(new Move(e1, c1));
 					}
 				}
@@ -146,10 +146,10 @@ public class Player {
 				Coord g8 = new Coord(Coord.COL_G, Coord.ROW_8);
 				if (!board.getSpace(f8).isOccupied()
 				 && !board.getSpace(g8).isOccupied()) {
-					if (!board.isPlayerThreatenedAtCoord(player, e8)
-					 && !board.isPlayerThreatenedAtCoord(player, f8)
-					 && !board.isPlayerThreatenedAtCoord(player, g8)
-					 && !board.isPlayerThreatenedAtCoord(player, h8)) {
+					if (!player.isThreatenedAtCoord(board, e8)
+					 && !player.isThreatenedAtCoord(board, f8)
+					 && !player.isThreatenedAtCoord(board, g8)
+					 && !player.isThreatenedAtCoord(board, h8)) {
 						moves.add(new Move(e8, g8));
 					}
 				}
@@ -163,11 +163,11 @@ public class Player {
 				if (!board.getSpace(b8).isOccupied()
 				 && !board.getSpace(c8).isOccupied()
 				 && !board.getSpace(d8).isOccupied()) {
-					if (!board.isPlayerThreatenedAtCoord(player, a8)
-					 && !board.isPlayerThreatenedAtCoord(player, b8)
-					 && !board.isPlayerThreatenedAtCoord(player, c8)
-					 && !board.isPlayerThreatenedAtCoord(player, d8)
-					 && !board.isPlayerThreatenedAtCoord(player, e8)) {
+					if (!player.isThreatenedAtCoord(board, a8)
+					 && !player.isThreatenedAtCoord(board, b8)
+					 && !player.isThreatenedAtCoord(board, c8)
+					 && !player.isThreatenedAtCoord(board, d8)
+					 && !player.isThreatenedAtCoord(board, e8)) {
 						moves.add(new Move(e8, c8));
 					}
 				}
@@ -176,9 +176,36 @@ public class Player {
 		return moves;
 	}
 
+	/**
+	 * Checks if a space is threatened by an opponent.
+	 * 
+	 * @param coord
+	 * @param colorToCheckIfUnderThreat
+	 * @return
+	 */
+	public boolean isThreatenedAtCoord(Board board, Coord coord) {
+		boolean isThreatened = false;
+		Set<Move> moves = getAllLegalMoves(board, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
+		for (Move move : moves) {
+			if (move.getTo().equals(coord)) {
+				isThreatened = true;
+				break;
+			}
+		}
+		return isThreatened;
+	}
 
-	private Set<Move> getLegalMoves(Coord coord) {
-		Board board = game.getBoard();
+
+	private Set<Move> getLegalMoves(Board board, Coord coord) {
+		if (coord == null) {
+			throw new IllegalArgumentException("getLegalMoves: coord is null.");
+		}
+		if (!Board.isValidCoord(coord)) {
+			throw new IllegalArgumentException("getLegalMoves: coord is not on board!: " + coord);
+		}
+		if (board.getSpace(coord).getPiece() == null) {
+			throw new IllegalArgumentException("getLegalMoves: no piece at this coord! " + coord);
+		}
 		return board.getSpace(coord).getPiece().getAvailableMoves(board, coord);
 	}
 

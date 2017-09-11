@@ -78,5 +78,8 @@ public abstract class Piece {
 	public boolean hasMoved() {
 		return hasMoved;
 	}
+	
+	@Override
+	public abstract String toString();
 
 }

@@ -35,4 +35,11 @@ public class Bishop extends Piece {
 		}
 		return bishop;
 	}
+
+
+	@Override
+	public String toString() {
+		String worb = this.color ? "w" : "b";
+		return worb + "b";
+	}
 }

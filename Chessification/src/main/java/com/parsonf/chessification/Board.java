@@ -42,13 +42,12 @@ public class Board {
 		for (int col = Coord.COL_MIN; col <= Coord.COL_MAX; col++) {
 			for (int row = Coord.ROW_MIN; row <= Coord.ROW_MAX; row++) {
 				if (getSpace(col, row).isOccupied()) {
-					clone.board[col - 1][row - 1] = new Space(getSpace(col, row).getPiece().copy());
+					clone.board[col - 1][row - 1] = getSpace(col, row).copy();
 				} else {
 					clone.board[col - 1][row - 1] = new Space();
 				}
 			}
 		}
-
 		return clone;
 	}
 	
@@ -155,22 +154,19 @@ public class Board {
 		if (move == null || move.getFrom() == null || move.getTo() == null) {
 			throw new IllegalArgumentException("Board.move arg 'move': " + move);
 		}
+		if (!getSpace(move.getFrom()).isOccupied()) {
+			throw new RuntimeException("No piece at this space we are moving from. move: " + move + ", board: " + this);
+		}
 		// TODO improve: handle en passant somehow. may need to redo some of this
 		// implementation.
 		Space space = getSpace(move.getFrom());
-		// TODO FIX BUG: sometimes space is null.
-		if (space == null) {
-			int x = 5;
-		}
 		Piece pieceToMove = space.pickUpPiece();
-		if (isActualMove) {
-			pieceToMove.setHasMoved();
-		}
 		if (getSpace(move.getTo()).isOccupied()) {
 			// captured piece.
 			getSpace(move.getTo()).pickUpPiece(); 
-			getSpace(move.getTo()).setPiece(pieceToMove);
 		}
+		getSpace(move.getTo()).setPiece(pieceToMove);
+		pieceToMove.setHasMoved();
 		// if castling, move the rook too.
 		if (move.getFrom().equals(new Coord(Coord.COL_E, Coord.ROW_1))) {
 			if (move.getTo().equals(new Coord(Coord.COL_C, Coord.ROW_1))) {
@@ -192,6 +188,18 @@ public class Board {
 			getSpace(move.getTo()).setPiece(promotedPawn);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		String s = "\n";
+		for (int col=0; col<8; col++) {
+			for (int row=7; row>=0; row--) {
+				s += board[row][7-col] + "  ";
+			}
+			s += "\n";
+		}
+		return s;
+	}
 
 	public boolean isPlayerInCheck(Player player) {
 		// if the destination of any move is a king of any color.
@@ -202,9 +210,6 @@ public class Board {
 		Set<Move> opponentMoves = player.getOpponent().getAllLegalMoves(this, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
 		for (Move move : opponentMoves) {
 			Space space = getSpace(move.getTo());
-			if (space == null) {
-				int x = 5;
-			}
 			if (space.isOccupied() && space.getPiece() instanceof King) {
 				isPlayerInCheck = true;
 				break;
@@ -233,25 +238,6 @@ public class Board {
 		} else {
 			return NOT_A_VALID_SPACE;
 		}
-	}
-
-	/**
-	 * Checks if a space is threatened by an opponent.
-	 * 
-	 * @param coord
-	 * @param colorToCheckIfUnderThreat
-	 * @return
-	 */
-	public boolean isPlayerThreatenedAtCoord(Player player, Coord coord) {
-		boolean isThreatened = false;
-		Set<Move> moves = player.getAllLegalMoves(this, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
-		for (Move move : moves) {
-			if (move.getTo().equals(coord)) {
-				isThreatened = true;
-				break;
-			}
-		}
-		return isThreatened;
 	}
 
 	public boolean hasPieces(boolean color) {

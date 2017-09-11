@@ -80,5 +80,16 @@ public class PawnTest {
 		assertTrue(testMessage, moves.size() == 1);
 		assertTrue(testMessage, moves.contains(new Move(whitePawnPos, new Coord(Coord.COL_D, Coord.ROW_4))));
 	}
+	
+	@Test
+	public void getAvailableMoves_WhitePawnCannotMoveTwoAfterMoved_OneMoveAvailable() {
+		final String testMessage = "White pawn can't move two after already moved.";
+		board.reset();
+		board.move(new Move(new Coord(Coord.COL_D, Coord.ROW_2), new Coord(Coord.COL_D, Coord.ROW_3)), Move.ACTUAL);
+		Piece pawnThatJustMoved = board.getSpace(new Coord(Coord.COL_D, Coord.ROW_3)).getPiece();
+		Set<Move> pawnMoves = pawnThatJustMoved.getAvailableMoves(board, new Coord(Coord.COL_D, Coord.ROW_3));
+		//System.out.println("get pawn available moves: " + pawnMoves);
+		assertTrue(testMessage, pawnMoves.size() == 1);
+	}
 
 }

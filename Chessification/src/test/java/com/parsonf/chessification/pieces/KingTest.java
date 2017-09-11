@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import com.parsonf.chessification.Chessification;
 import com.parsonf.chessification.Color;
 import com.parsonf.chessification.Coord;
 import com.parsonf.chessification.Move;
+import com.parsonf.chessification.players.Player;
 
 public class KingTest {
 	private Chessification chess;
@@ -117,5 +119,20 @@ public class KingTest {
 		assertTrue("Lone d4 king can move to e5.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_5)));
 		assertTrue("Lone d4 king can move to d4.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_4)));
 		assertTrue("Lone d4 king can move to e3.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_3)));
+	}
+	
+	@Test
+	public void getAvailableMoves_WhiteCastleKingSide_MoveIsAvailable() {
+		final String testMessage = "King has move available to castle kingside when criteria is met.";
+		board.reset();
+		board.getSpace(new Coord(Coord.COL_F, Coord.ROW_1)).pickUpPiece();
+		board.getSpace(new Coord(Coord.COL_G, Coord.ROW_1)).pickUpPiece();
+		
+		Coord kingPos = new Coord(Coord.COL_E, Coord.ROW_1);
+		Player player = chess.getGame().getPlayer(Color.WHITE);
+		Set<Move> moves = player.getAllLegalMoves(board, Player.CHECK_CHECK, Player.CHECK_CASTLE);
+		moves = moves.stream().filter(p -> p.getFrom().equals(kingPos)).collect(Collectors.toSet());
+		System.out.println("Available moves for king trying to castle kingside:\n" + moves);
+		assertTrue(testMessage, moves.contains(new Move(kingPos, new Coord(Coord.COL_G, Coord.ROW_1))));
 	}
 }

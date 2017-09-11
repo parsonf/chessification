@@ -58,7 +58,7 @@ public class Game {
 		return moves;
 	}
 
-	public void resetBoardForNewGame() {
+	public void resetLogicalBoardForNewGame() {
 		board.reset();
 	}
 }

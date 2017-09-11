@@ -39,7 +39,6 @@ public class King extends Piece {
 		return moves;
 	}
 
-
 	@Override
 	public Piece copy() {
 		King king = new King(color);
@@ -47,5 +46,11 @@ public class King extends Piece {
 			king.setHasMoved();
 		}
 		return king;
+	}
+	
+	@Override
+	public String toString() {
+		String worb = this.color ? "w" : "b";
+		return worb + "k";
 	}
 }

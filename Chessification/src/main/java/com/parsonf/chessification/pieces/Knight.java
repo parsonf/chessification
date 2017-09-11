@@ -50,6 +50,12 @@ public class Knight extends Piece {
 	}
 
 	// Getters/Setters -----------------------------------------------------
+
 	
+	@Override
+	public String toString() {
+		String worb = this.color ? "w" : "b";
+		return worb + "n";
+	}
 	
 }

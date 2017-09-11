@@ -9,12 +9,10 @@ import com.parsonf.chessification.Coord;
 import com.parsonf.chessification.Move;
 
 public class Pawn extends Piece {
-	private boolean hasMoved;
 
 	// Constructors --------------------------------------------------------
 	public Pawn(boolean color) {
 		super(color);
-		hasMoved = false;
 	}
 	
 
@@ -79,20 +77,13 @@ public class Pawn extends Piece {
 	@Override
 	public Piece copy() {
 		Pawn pawn = new Pawn(color);
-		if (this.hasMoved()) {
-			pawn.setHasMoved();
-		}
+		pawn.hasMoved = this.hasMoved;
 		return pawn;
 	}
-
-	// Getters/Setters -----------------------------------------------------
-	public boolean hasMoved() {
-		return hasMoved;
+	
+	@Override
+	public String toString() {
+		String worb = this.color ? "w" : "b";
+		return worb + "p";
 	}
-
-	public void moved() {
-		this.hasMoved = true;
-	}
-
-
 }

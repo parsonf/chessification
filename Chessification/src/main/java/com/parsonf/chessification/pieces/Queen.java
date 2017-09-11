@@ -39,5 +39,11 @@ public class Queen extends Piece {
 		}
 		return queen;
 	}
+	
+	@Override
+	public String toString() {
+		String worb = this.color ? "w" : "b";
+		return worb + "Q";
+	}
 
 }

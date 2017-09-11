@@ -49,25 +49,25 @@ public class ChessificationTest {
 		Coord guiCoord = new Coord(0,0);
 		Coord expectedLogicalCoord = new Coord(Coord.COL_A, Coord.ROW_8);
 		Coord logicalCoord = chess.convertGUICoordToLogicalCoord(guiCoord);
-		System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
+		//System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
 		assertTrue(testMessage, logicalCoord.equals(expectedLogicalCoord));
 		
 		guiCoord = new Coord(0,7);
 		expectedLogicalCoord = new Coord(Coord.COL_H, Coord.ROW_8);
 		logicalCoord = chess.convertGUICoordToLogicalCoord(guiCoord);
-		System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
+		//System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
 		assertTrue(testMessage, logicalCoord.equals(expectedLogicalCoord));
 		
 		guiCoord = new Coord(7,7);
 		expectedLogicalCoord = new Coord(Coord.COL_H, Coord.ROW_1);
 		logicalCoord = chess.convertGUICoordToLogicalCoord(guiCoord);
-		System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
+		//System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
 		assertTrue(testMessage, logicalCoord.equals(expectedLogicalCoord));
 		
 		guiCoord = new Coord(7,0);
 		expectedLogicalCoord = new Coord(Coord.COL_A, Coord.ROW_1);
 		logicalCoord = chess.convertGUICoordToLogicalCoord(guiCoord);
-		System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
+		//System.out.println("expectedlogicalcoord: " + expectedLogicalCoord + ", logicalCoord: " + logicalCoord);
 		assertTrue(testMessage, logicalCoord.equals(expectedLogicalCoord));
 	}
 	

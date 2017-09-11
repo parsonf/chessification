@@ -12,6 +12,7 @@ import com.parsonf.chessification.Board;
 import com.parsonf.chessification.Chessification;
 import com.parsonf.chessification.Color;
 import com.parsonf.chessification.Coord;
+import com.parsonf.chessification.Move;
 
 public class QueenTest {
 	private Chessification chess;
@@ -68,5 +69,15 @@ public class QueenTest {
 		assertTrue("Lone D4 queen can move to E3.", destinations.contains(new Coord(Coord.COL_E, Coord.ROW_3)));
 		assertTrue("Lone D4 queen can move to F2.", destinations.contains(new Coord(Coord.COL_F, Coord.ROW_2)));
 		assertTrue("Lone D4 queen can move to G1.", destinations.contains(new Coord(Coord.COL_G, Coord.ROW_1)));
+	}
+	
+	@Test
+	public void getAvailableMoves_PawnToD3_QueenHasOneMove() {
+		// saw this test fail with manual testing, so, let's always unit test it.
+		// although, this is really a problem with the Piece.lineMovement method.
+		board.reset();
+		board.move(new Move(new Coord(Coord.COL_D, Coord.ROW_2), new Coord(Coord.COL_D, Coord.ROW_3)), Move.ACTUAL);
+		Set<Move> moves = new Queen(Color.WHITE).getAvailableMoves(board, new Coord(Coord.COL_D, Coord.ROW_1));
+		assertTrue("Queen has one move.", moves.size() == 1);
 	}
 }

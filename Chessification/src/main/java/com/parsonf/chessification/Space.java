@@ -22,6 +22,13 @@ public class Space {
 	
 	// getters and setters -------------------------------------------------------------------
 	
+	public Space copy() {
+		Space space = new Space();
+		space.occupied = this.occupied;
+		space.piece = this.piece.copy();
+		return space;
+	}
+	
 	public boolean isOccupied() {
 		return occupied;
 	}
@@ -36,9 +43,22 @@ public class Space {
 		occupied = true;
 	}
 	public Piece pickUpPiece() {
-		Piece piece = this.piece;
-		this.piece = null;
-		occupied = false;
-		return piece;
+		if (this.piece == null) {
+			return null;
+		} else {
+			Piece piece = this.piece.copy();
+			this.piece = null;
+			occupied = false;
+			return piece;
+		}
+	}
+	
+	@Override
+	public String toString() {
+		if (occupied) {
+			return "[" + piece.toString() + "]";
+		} else {
+			return "[  ]";
+		}
 	}
 }

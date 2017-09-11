@@ -46,7 +46,7 @@ public class Chessification {
 	}
 	
 	public void resetLogicalBoardForNewGame() {
-		game.resetBoardForNewGame();
+		game.resetLogicalBoardForNewGame();
 	}
 	
 	public Game getGame() {

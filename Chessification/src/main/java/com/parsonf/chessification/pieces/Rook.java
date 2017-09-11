@@ -35,4 +35,10 @@ public class Rook extends Piece {
 		}
 		return rook;
 	}
+	
+	@Override
+	public String toString() {
+		String worb = this.color ? "w" : "b";
+		return worb + "r";
+	}
 }

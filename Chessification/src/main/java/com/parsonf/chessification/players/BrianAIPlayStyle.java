@@ -137,7 +137,7 @@ public class BrianAIPlayStyle extends AIPlayStyle {
 					isMine = (whoJustMoved.getColor() == pieceColor);
 					// evaluate now
 					// take into consideration whether that piece is threatened.
-					isThreatened = board.isPlayerThreatenedAtCoord(whoJustMoved, coord);
+					isThreatened = whoJustMoved.isThreatenedAtCoord(board, coord);
 					int pieceIndex = getPieceIndex(piece);
 					// lets add the value of simply having that piece on the board.
 					pieceValue = (isThreatened) ? PIECE_VALUE[pieceIndex]/2 : PIECE_VALUE[pieceIndex];

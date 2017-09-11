@@ -12,7 +12,7 @@ public class AIPlayer extends Player {
 	// range within supposed-best-move's score to decide to evaluate move or prune the branch.
 	private final int PRUNE_CUTOFF = 120;
 	// how many plies to search
-	private final int MAX_PLY = 1;
+	private final int MAX_PLY = 3;
 	private AIPlayStyle playStyle;
 	
 	// Constructors --------------------------------------------------------
@@ -32,7 +32,7 @@ public class AIPlayer extends Player {
 			thinkBoard.move(move, Move.ACTUAL);
 			int moveScore = minimaxDepthFirst(thinkBoard, this.getOpponent(), MAX_PLY);
 			bestMoveScore = (bestMoveScore == null) ? moveScore : bestMoveScore;
-			if (moveScore > bestMoveScore) {
+			if (moveScore >= bestMoveScore) {
 				bestMoveScore = moveScore;
 				bestMove = move;
 			}
@@ -64,7 +64,7 @@ public class AIPlayer extends Player {
 				// and only search deeper on moves that fall within the cutoff.
 				for (Move move: allLegalMoves) {
 					Board hypotheticalBoard = thinkBoard.copy();
-					hypotheticalBoard.move(move, Move.HYPOTHETICAL);
+					hypotheticalBoard.move(move, Move.ACTUAL);
 					hypotheticalBoard.setScore(playStyle.evaluateGameState(hypotheticalBoard, player));
 					if (player.getColor() == Color.BLACK) {
 						if (hypotheticalBoard.getScore() <= cutoffPoint) {
@@ -102,7 +102,7 @@ public class AIPlayer extends Player {
 		Board hypotheticalBoard = null;
 		for (Move move: moves) {
 			hypotheticalBoard = thinkBoard.copy();
-			hypotheticalBoard.move(move, Move.HYPOTHETICAL);
+			hypotheticalBoard.move(move, Move.ACTUAL);
 			score = playStyle.evaluateGameState(hypotheticalBoard, player);
 			if (color == Color.BLACK) {
 				bestScore = (bestScore > score) ? score : bestScore;
