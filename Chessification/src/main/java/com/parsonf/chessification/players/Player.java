@@ -185,7 +185,7 @@ public class Player {
 	 */
 	public boolean isThreatenedAtCoord(Board board, Coord coord) {
 		boolean isThreatened = false;
-		Set<Move> moves = getAllLegalMoves(board, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
+		Set<Move> moves = this.getOpponent().getAllLegalMoves(board, Player.IGNORE_CHECK, Player.IGNORE_CASTLE);
 		for (Move move : moves) {
 			if (move.getTo().equals(coord)) {
 				isThreatened = true;

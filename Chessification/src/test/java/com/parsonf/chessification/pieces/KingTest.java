@@ -133,6 +133,7 @@ public class KingTest {
 		Set<Move> moves = player.getAllLegalMoves(board, Player.CHECK_CHECK, Player.CHECK_CASTLE);
 		moves = moves.stream().filter(p -> p.getFrom().equals(kingPos)).collect(Collectors.toSet());
 		System.out.println("Available moves for king trying to castle kingside:\n" + moves);
+		System.out.println(board);
 		assertTrue(testMessage, moves.contains(new Move(kingPos, new Coord(Coord.COL_G, Coord.ROW_1))));
 	}
 }

@@ -43,12 +43,12 @@ public class Space {
 		occupied = true;
 	}
 	public Piece pickUpPiece() {
+		occupied = false;
 		if (this.piece == null) {
 			return null;
 		} else {
 			Piece piece = this.piece.copy();
 			this.piece = null;
-			occupied = false;
 			return piece;
 		}
 	}

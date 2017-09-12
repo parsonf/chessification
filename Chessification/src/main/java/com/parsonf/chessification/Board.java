@@ -194,7 +194,7 @@ public class Board {
 		String s = "\n";
 		for (int col=0; col<8; col++) {
 			for (int row=7; row>=0; row--) {
-				s += board[row][7-col] + "  ";
+				s += board[7-row][7-col] + "  ";
 			}
 			s += "\n";
 		}
