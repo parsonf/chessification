@@ -12,7 +12,7 @@ public class AIPlayer extends Player {
 	// range within supposed-best-move's score to decide to evaluate move or prune the branch.
 	private final int PRUNE_CUTOFF = 120;
 	// how many plies to search
-	private final int MAX_PLY = 1;
+	private final int MAX_PLY = 2;
 	private AIPlayStyle playStyle;
 	
 	// Constructors --------------------------------------------------------

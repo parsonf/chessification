@@ -123,7 +123,7 @@ public class KingTest {
 	
 	@Test
 	public void getAvailableMoves_WhiteCastleKingSide_MoveIsAvailable() {
-		final String testMessage = "King has move available to castle kingside when criteria is met.";
+		final String testMessage = "White King has move available to castle kingside when criteria is met.";
 		board.reset();
 		board.getSpace(new Coord(Coord.COL_F, Coord.ROW_1)).pickUpPiece();
 		board.getSpace(new Coord(Coord.COL_G, Coord.ROW_1)).pickUpPiece();
@@ -132,8 +132,58 @@ public class KingTest {
 		Player player = chess.getGame().getPlayer(Color.WHITE);
 		Set<Move> moves = player.getAllLegalMoves(board, Player.CHECK_CHECK, Player.CHECK_CASTLE);
 		moves = moves.stream().filter(p -> p.getFrom().equals(kingPos)).collect(Collectors.toSet());
-		System.out.println("Available moves for king trying to castle kingside:\n" + moves);
-		System.out.println(board);
+		//System.out.println("Available moves for white king trying to castle kingside:\n" + moves);
+		//System.out.println(board);
 		assertTrue(testMessage, moves.contains(new Move(kingPos, new Coord(Coord.COL_G, Coord.ROW_1))));
+	}
+	
+	@Test
+	public void getAvailableMoves_WhiteCastleQueenSide_MoveIsAvailable() {
+		final String testMessage = "White King has move available to castle queenside when criteria is met.";
+		board.reset();
+		board.getSpace(new Coord(Coord.COL_B, Coord.ROW_1)).pickUpPiece();
+		board.getSpace(new Coord(Coord.COL_C, Coord.ROW_1)).pickUpPiece();
+		board.getSpace(new Coord(Coord.COL_D, Coord.ROW_1)).pickUpPiece();
+		
+		Coord kingPos = new Coord(Coord.COL_E, Coord.ROW_1);
+		Player player = chess.getGame().getPlayer(Color.WHITE);
+		Set<Move> moves = player.getAllLegalMoves(board, Player.CHECK_CHECK, Player.CHECK_CASTLE);
+		moves = moves.stream().filter(p -> p.getFrom().equals(kingPos)).collect(Collectors.toSet());
+		//System.out.println("Available moves for white king trying to castle queenside:\n" + moves);
+		//System.out.println(board);
+		assertTrue(testMessage, moves.contains(new Move(kingPos, new Coord(Coord.COL_C, Coord.ROW_1))));
+	}
+	
+	@Test
+	public void getAvailableMoves_BlackCastleKingSide_MoveIsAvailable() {
+		final String testMessage = "Black King has move available to castle kingside when criteria is met.";
+		board.reset();
+		board.getSpace(new Coord(Coord.COL_F, Coord.ROW_8)).pickUpPiece();
+		board.getSpace(new Coord(Coord.COL_G, Coord.ROW_8)).pickUpPiece();
+		
+		Coord kingPos = new Coord(Coord.COL_E, Coord.ROW_8);
+		Player player = chess.getGame().getPlayer(Color.BLACK);
+		Set<Move> moves = player.getAllLegalMoves(board, Player.CHECK_CHECK, Player.CHECK_CASTLE);
+		moves = moves.stream().filter(p -> p.getFrom().equals(kingPos)).collect(Collectors.toSet());
+		//System.out.println("Available moves for black king trying to castle kingside:\n" + moves);
+		//System.out.println(board);
+		assertTrue(testMessage, moves.contains(new Move(kingPos, new Coord(Coord.COL_G, Coord.ROW_8))));
+	}
+	
+	@Test
+	public void getAvailableMoves_BlackCastleQueenSide_MoveIsAvailable() {
+		final String testMessage = "Black King has move available to castle queenside when criteria is met.";
+		board.reset();
+		board.getSpace(new Coord(Coord.COL_B, Coord.ROW_8)).pickUpPiece();
+		board.getSpace(new Coord(Coord.COL_C, Coord.ROW_8)).pickUpPiece();
+		board.getSpace(new Coord(Coord.COL_D, Coord.ROW_8)).pickUpPiece();
+		
+		Coord kingPos = new Coord(Coord.COL_E, Coord.ROW_8);
+		Player player = chess.getGame().getPlayer(Color.BLACK);
+		Set<Move> moves = player.getAllLegalMoves(board, Player.CHECK_CHECK, Player.CHECK_CASTLE);
+		moves = moves.stream().filter(p -> p.getFrom().equals(kingPos)).collect(Collectors.toSet());
+		//System.out.println("Available moves for black king trying to castle queenside:\n" + moves);
+		//System.out.println(board);
+		assertTrue(testMessage, moves.contains(new Move(kingPos, new Coord(Coord.COL_C, Coord.ROW_8))));
 	}
 }

@@ -105,8 +105,8 @@ public class Player {
 		if (player.color == Color.WHITE) {
 			Coord e1 = new Coord(Coord.COL_E, Coord.ROW_1);
 			Coord h1 = new Coord(Coord.COL_H, Coord.ROW_1);
-			if (board.getSpace(e1).isOccupied() && !game.getBoard().getSpace(e1).getPiece().hasMoved()
-			 && board.getSpace(h1).isOccupied() && !game.getBoard().getSpace(h1).getPiece().hasMoved()) {
+			if (board.getSpace(e1).isOccupied() && !board.getSpace(e1).getPiece().hasMoved()
+			 && board.getSpace(h1).isOccupied() && !board.getSpace(h1).getPiece().hasMoved()) {
 				Coord f1 = new Coord(Coord.COL_F, Coord.ROW_1);
 				Coord g1 = new Coord(Coord.COL_G, Coord.ROW_1);
 				if (!board.getSpace(f1).isOccupied()
@@ -120,8 +120,8 @@ public class Player {
 				}
 			}
 			Coord a1 = new Coord(Coord.COL_A, Coord.ROW_1);
-			if (board.getSpace(e1).isOccupied() && !game.getBoard().getSpace(e1).getPiece().hasMoved()
-			 && board.getSpace(a1).isOccupied() && !game.getBoard().getSpace(a1).getPiece().hasMoved()) {
+			if (board.getSpace(e1).isOccupied() && !board.getSpace(e1).getPiece().hasMoved()
+			 && board.getSpace(a1).isOccupied() && !board.getSpace(a1).getPiece().hasMoved()) {
 				Coord b1 = new Coord(Coord.COL_B, Coord.ROW_1);
 				Coord c1 = new Coord(Coord.COL_C, Coord.ROW_1);
 				Coord d1 = new Coord(Coord.COL_D, Coord.ROW_1);
@@ -140,8 +140,8 @@ public class Player {
 		} else { // player.color is black
 			Coord e8 = new Coord(Coord.COL_E, Coord.ROW_8);
 			Coord h8 = new Coord(Coord.COL_H, Coord.ROW_8);
-			if (board.getSpace(e8).isOccupied() && !game.getBoard().getSpace(e8).getPiece().hasMoved()
-			 && board.getSpace(h8).isOccupied() && !game.getBoard().getSpace(h8).getPiece().hasMoved()) {
+			if (board.getSpace(e8).isOccupied() && !board.getSpace(e8).getPiece().hasMoved()
+			 && board.getSpace(h8).isOccupied() && !board.getSpace(h8).getPiece().hasMoved()) {
 				Coord f8 = new Coord(Coord.COL_F, Coord.ROW_8);
 				Coord g8 = new Coord(Coord.COL_G, Coord.ROW_8);
 				if (!board.getSpace(f8).isOccupied()
@@ -155,8 +155,8 @@ public class Player {
 				}
 			}
 			Coord a8 = new Coord(Coord.COL_A, Coord.ROW_8);
-			if (board.getSpace(e8).isOccupied() && !game.getBoard().getSpace(e8).getPiece().hasMoved()
-			 && board.getSpace(a8).isOccupied() && !game.getBoard().getSpace(a8).getPiece().hasMoved()) {
+			if (board.getSpace(e8).isOccupied() && !board.getSpace(e8).getPiece().hasMoved()
+			 && board.getSpace(a8).isOccupied() && !board.getSpace(a8).getPiece().hasMoved()) {
 				Coord b8 = new Coord(Coord.COL_B, Coord.ROW_8);
 				Coord c8 = new Coord(Coord.COL_C, Coord.ROW_8);
 				Coord d8 = new Coord(Coord.COL_D, Coord.ROW_8);
